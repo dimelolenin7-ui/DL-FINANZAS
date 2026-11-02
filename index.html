@@ -76,7 +76,7 @@
       color: #94a3b8; cursor: pointer;
     }
 
-    /* Currency Badge Button */
+    /* Currency Badge */
     .currency-badge {
       font-size: 10px; font-weight: 700;
       background: rgba(16,185,129,0.15); color: #10b981;
@@ -84,7 +84,6 @@
       border-radius: 6px; cursor: pointer; display: inline-flex;
       align-items: center; gap: 4px; transition: all 0.2s;
     }
-    .currency-badge:hover { background: rgba(16,185,129,0.25); border-color: #10b981; }
 
     /* Grid KPIs */
     .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
@@ -122,6 +121,11 @@
     }
     .dropdown button:hover, .dropdown label:hover { background: #1e293b; color: #fff; }
 
+    .tag-freq {
+      font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 4px;
+      background: #1e293b; color: #94a3b8; border: 1px solid #334155;
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -131,7 +135,7 @@
   <header class="header-bar">
     <div style="display: flex; align-items: center; gap: 10px;">
       
-      <!-- Logo Oficial DL Company Tecnology -->
+      <!-- Logo Oficial DL -->
       <div class="logo-container" title="DL Company Tecnology">
         <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -150,17 +154,10 @@
               <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.8"/>
             </filter>
           </defs>
-          <!-- Aro Circular Metálico Exterior -->
           <circle cx="50" cy="50" r="41" stroke="url(#metalBevel)" stroke-width="7" filter="url(#shadowDepth)"/>
           <circle cx="50" cy="50" r="35" stroke="#0b0f19" stroke-width="2"/>
-          
-          <!-- Monograma Geométrico 'DL' -->
-          <!-- Trazo 'D' Curvado Biselado -->
-          <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" 
-                fill="url(#metalBg)" filter="url(#shadowDepth)"/>
-          <!-- Trazo 'L' Angular Afilado y Cruzado -->
-          <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" 
-                fill="url(#metalBevel)" filter="url(#shadowDepth)"/>
+          <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" fill="url(#metalBg)" filter="url(#shadowDepth)"/>
+          <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" fill="url(#metalBevel)" filter="url(#shadowDepth)"/>
         </svg>
       </div>
 
@@ -168,7 +165,6 @@
         <div style="display: flex; align-items: center; gap: 6px; position: relative;">
           <strong style="font-size: 14px; letter-spacing: -0.3px; color: #fff;">DL FINANZAS</strong>
           
-          <!-- Botón de Selección de Divisa Dinámica -->
           <button id="btn-currency-selector" class="currency-badge mono" title="Cambiar moneda">
             <span id="label-active-currency">COP</span>
             <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -221,7 +217,7 @@
     <section class="card">
       <div style="display: flex; flex-direction: column; gap: 8px;">
         <span class="mono" style="font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase;">● Presupuesto Hogar</span>
-        <h2 style="font-size: 22px; font-weight: 800; color: #fff;">Resumen Financiero</h2>
+        <h2 style="font-size: 22px; font-weight: 800; color: #fff;">Resumen Financiero Mensual</h2>
         <div style="display: flex; gap: 10px; margin-top: 6px;">
           <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
             <p style="font-size: 10px; color: #94a3b8;">TASA AHORRO</p>
@@ -236,7 +232,7 @@
 
       <div class="kpi-grid">
         <div class="kpi-box">
-          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">INGRESOS</p>
+          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">INGRESOS AL MES</p>
           <p id="kpi-incomes" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
         </div>
         <div class="kpi-box">
@@ -257,7 +253,10 @@
     <!-- Semáforo y Topes -->
     <section class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Semáforo de Presupuesto</h3>
+        <div>
+          <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Semáforo de Presupuesto</h3>
+          <p style="font-size: 11px; color: #94a3b8;">Proyección mensualizada frente a topes máximos</p>
+        </div>
         <button id="btn-open-limits" class="btn-gray">Calibrar Topes</button>
       </div>
       <div id="budget-progress-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -270,7 +269,7 @@
         <select id="filter-type" style="background: #0b1120; color: #cbd5e1; border: 1px solid #334155; padding: 4px 8px; border-radius: 8px; font-size: 11px;">
           <option value="all">Todos</option>
           <option value="ingreso">Ingresos</option>
-          <option value="fijo">Fijos</option>
+          <option value="fijo">Fijos Hogar</option>
           <option value="variable">Variables</option>
         </select>
       </div>
@@ -281,6 +280,7 @@
               <th style="padding: 8px 4px;">FECHA</th>
               <th style="padding: 8px 4px;">CONCEPTO</th>
               <th style="padding: 8px 4px;">CATEGORÍA</th>
+              <th style="padding: 8px 4px;">FRECUENCIA</th>
               <th style="padding: 8px 4px; text-align: right;">VALOR</th>
               <th style="padding: 8px 4px; text-align: center;"></th>
             </tr>
@@ -300,10 +300,7 @@
         <button id="btn-close-currency" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
       </div>
       <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">Elige la divisa en la que deseas visualizar todos los importes:</p>
-      
-      <div style="display: flex; flex-direction: column; gap: 8px;" id="currency-options-list">
-        <!-- Renderizado dinámico de divisas -->
-      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="currency-options-list"></div>
     </div>
   </div>
 
@@ -315,6 +312,8 @@
         <button id="btn-close-modal" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
       </div>
       <form id="form-transaction">
+        
+        <!-- Naturaleza del Flujo -->
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Tipo de Flujo</label>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
           <button type="button" data-flow="ingreso" class="flow-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer;">Ingreso</button>
@@ -323,8 +322,17 @@
         </div>
         <input type="hidden" id="tx-flow" value="ingreso">
 
+        <!-- Selector Frecuencia de Pago / Repetición -->
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Frecuencia del Flujo</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
+          <button type="button" data-freq="mensual" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer;">Mensual (30d)</button>
+          <button type="button" data-freq="quincenal" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Quincenal (15d)</button>
+          <button type="button" data-freq="unico" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Puntual / Único</button>
+        </div>
+        <input type="hidden" id="tx-frequency" value="mensual">
+
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Concepto</label>
-        <input type="text" id="tx-concept" required placeholder="Ej: Sueldo mensual, Alquiler..." class="input-field">
+        <input type="text" id="tx-concept" required placeholder="Ej: Sueldo, Arriendo, Internet, Mercado..." class="input-field">
 
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto (<span id="modal-amount-currency">COP</span>)</label>
         <input type="number" id="tx-amount" required placeholder="Ej: 1930000" min="0.01" step="any" class="input-field mono">
@@ -340,7 +348,7 @@
           <option value="Otros">Otros</option>
         </select>
 
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Fecha</label>
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Fecha de Aplicación</label>
         <input type="date" id="tx-date" required class="input-field">
 
         <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
@@ -386,7 +394,6 @@
   </div>
 
   <script>
-    // Catálogo de monedas disponibles
     const CURRENCIES = {
       'COP': { label: 'Peso Colombiano (COP)', locale: 'es-CO', symbol: '$' },
       'USD': { label: 'Dólar Estadounidense (USD)', locale: 'en-US', symbol: '$' },
@@ -440,48 +447,56 @@
       document.getElementById('modal-amount-currency').textContent = currentCurrencyCode;
       document.getElementById('modal-limits-currency').textContent = currentCurrencyCode;
 
-      let totalIncome = 0;
-      let totalFixed = 0;
-      let totalVar = 0;
+      let totalMonthlyIncome = 0;
+      let totalMonthlyFixed = 0;
+      let totalMonthlyVar = 0;
       const catExpenses = {};
 
       transactions.forEach(t => {
-        const amt = Number(t.amount) || 0;
-        if (t.flow === 'ingreso') totalIncome += amt;
-        else if (t.flow === 'fijo') {
-          totalFixed += amt;
-          catExpenses[t.category] = (catExpenses[t.category] || 0) + amt;
+        const rawAmt = Number(t.amount) || 0;
+        // Factor de ponderación mensual: si es quincenal, computa el ciclo de 2 quincenas al mes
+        let monthlyFactor = 1;
+        if (t.frequency === 'quincenal') monthlyFactor = 2;
+        const monthlyValue = rawAmt * monthlyFactor;
+
+        if (t.flow === 'ingreso') {
+          totalMonthlyIncome += monthlyValue;
+        } else if (t.flow === 'fijo') {
+          totalMonthlyFixed += monthlyValue;
+          catExpenses[t.category] = (catExpenses[t.category] || 0) + monthlyValue;
         } else if (t.flow === 'variable') {
-          totalVar += amt;
-          catExpenses[t.category] = (catExpenses[t.category] || 0) + amt;
+          totalMonthlyVar += rawAmt; // variables operan por desembolso puntual
+          catExpenses[t.category] = (catExpenses[t.category] || 0) + rawAmt;
         }
       });
 
-      const totalExp = totalFixed + totalVar;
-      const balance = totalIncome - totalExp;
-      const rate = totalIncome > 0 ? Math.max(0, ((balance / totalIncome) * 100)).toFixed(1) : '0.0';
+      const totalMonthlyExpenses = totalMonthlyFixed + totalMonthlyVar;
+      const balance = totalMonthlyIncome - totalMonthlyExpenses;
+      const rate = totalMonthlyIncome > 0 ? Math.max(0, ((balance / totalMonthlyIncome) * 100)).toFixed(1) : '0.0';
 
       kpiBalance.textContent = formatMoney(balance);
       kpiSavingsRate.textContent = rate + '%';
-      kpiIncomes.textContent = formatMoney(totalIncome);
-      kpiFixed.textContent = formatMoney(totalFixed);
-      kpiVar.textContent = formatMoney(totalVar);
-      kpiTotalExp.textContent = formatMoney(totalExp);
+      kpiIncomes.textContent = formatMoney(totalMonthlyIncome);
+      kpiFixed.textContent = formatMoney(totalMonthlyFixed);
+      kpiVar.textContent = formatMoney(totalMonthlyVar);
+      kpiTotalExp.textContent = formatMoney(totalMonthlyExpenses);
 
       const f = filterType.value;
       const filtered = transactions.filter(t => f === 'all' || t.flow === f);
       tableBody.innerHTML = '';
       if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="5" style="padding: 16px; text-align: center; color: #64748b;">No hay movimientos aún.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">No hay movimientos aún.</td></tr>`;
       } else {
         filtered.forEach(t => {
           const isInc = t.flow === 'ingreso';
+          const freqLabel = t.frequency === 'quincenal' ? 'Quincenal (x2/mes)' : (t.frequency === 'mensual' ? 'Mensual' : 'Puntual');
           const tr = document.createElement('tr');
           tr.style.borderBottom = '1px solid #1e293b';
           tr.innerHTML = `
             <td class="mono" style="padding: 8px 4px; color: #94a3b8;">${t.date}</td>
             <td style="padding: 8px 4px; font-weight: 700; color: #fff;">${t.concept}</td>
             <td style="padding: 8px 4px; color: #cbd5e1;">${t.category}</td>
+            <td style="padding: 8px 4px;"><span class="tag-freq">${freqLabel}</span></td>
             <td class="mono" style="padding: 8px 4px; text-align: right; font-weight: 700; color: ${isInc ? '#10b981' : '#f1f5f9'};">
               ${isInc ? '+' : '-'} ${formatMoney(t.amount)}
             </td>
@@ -516,8 +531,8 @@
             <div style="width: ${pct}%; height: 100%; background: ${color}; transition: width 0.3s;"></div>
           </div>
           <div class="mono" style="display: flex; justify-content: space-between; font-size: 10px; color: #64748b;">
-            <span>${formatMoney(spent)}</span>
-            <span>Tope: ${formatMoney(lim)}</span>
+            <span>Gasto Proyectado: ${formatMoney(spent)}</span>
+            <span>Tope Mes: ${formatMoney(lim)}</span>
           </div>
         `;
         budgetList.appendChild(div);
@@ -588,7 +603,7 @@
       };
       document.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
 
-      // Flujo de Botones
+      // Selector de Flujo
       const flowBtns = document.querySelectorAll('.flow-btn');
       const txFlowInput = document.getElementById('tx-flow');
       flowBtns.forEach(btn => {
@@ -605,12 +620,30 @@
         };
       });
 
+      // Selector de Frecuencia
+      const freqBtns = document.querySelectorAll('.freq-btn');
+      const txFreqInput = document.getElementById('tx-frequency');
+      freqBtns.forEach(btn => {
+        btn.onclick = () => {
+          freqBtns.forEach(b => {
+            b.style.background = '#070a10';
+            b.style.borderColor = '#1e293b';
+            b.style.color = '#94a3b8';
+          });
+          txFreqInput.value = btn.dataset.freq;
+          btn.style.background = 'rgba(16,185,129,0.2)';
+          btn.style.borderColor = '#10b981';
+          btn.style.color = '#6ee7b7';
+        };
+      });
+
       // Guardar Transacción
       document.getElementById('form-transaction').onsubmit = (e) => {
         e.preventDefault();
         transactions.unshift({
           id: Date.now().toString(),
           flow: txFlowInput.value,
+          frequency: txFreqInput.value,
           concept: document.getElementById('tx-concept').value.trim(),
           amount: parseFloat(document.getElementById('tx-amount').value),
           category: document.getElementById('tx-category').value,
