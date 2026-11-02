@@ -12,7 +12,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -241,7 +241,7 @@
         </button>
       </form>
 
-      <!-- Botón Google con activación directa -->
+      <!-- Botón Google -->
       <div style="position: relative; margin: 20px 0 10px; text-align: center;">
         <span style="background: #0f172a; padding: 0 10px; font-size: 10px; color: #64748b; font-weight: 700;">O ACCEDE RÁPIDO CON</span>
       </div>
@@ -479,11 +479,18 @@
           💡 <strong>Servicio Público Registrado:</strong> Se contabilizará como <em>Gasto Fijo</em> de tu hogar con el valor real de la factura que te llegó.
         </div>
 
+        <!-- Categoría del Movimiento con opción Otros -->
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Categoría del Movimiento</label>
-        <select id="tx-category" class="input-field"></select>
+        <select id="tx-category" class="input-field" onchange="handleCategoryChange()"></select>
+
+        <!-- Campo Dinámico para Categoría Manual Personalizada -->
+        <div id="custom-category-box" class="hidden">
+          <label style="font-size: 11px; color: #10b981; font-weight: 700;">Escribe el nombre de esta nueva categoría:</label>
+          <input type="text" id="tx-custom-category" placeholder="Ej: Parqueadero, Gimnasio, Mascotas..." class="input-field" style="border-color: #10b981;">
+        </div>
 
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Concepto / Detalle</label>
-        <input type="text" id="tx-concept" required placeholder="Ej: Sueldo, Recibo Luz, Arriendo, Mercado..." class="input-field">
+        <input type="text" id="tx-concept" required placeholder="Ej: Sueldo, Recibo Luz, Arriendo, Pago parqueadero..." class="input-field">
 
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto (<span id="modal-amount-currency">COP</span>)</label>
         <input type="number" id="tx-amount" required placeholder="Ej: 150000" min="0.01" step="any" class="input-field mono">
@@ -600,12 +607,13 @@
       'ARS': { label: 'Peso Argentino (ARS)', locale: 'es-AR', symbol: '$' }
     };
 
+    // Listas base con opción 'Otros / Personalizada...' incluida
     const INCOME_CATEGORIES = [
       'Salario / Nómina',
       'Ventas / Negocio Propio',
       'Honorarios / Comisiones',
       'Rentas e Inversiones',
-      'Otros Ingresos'
+      'Otros / Personalizada...'
     ];
 
     const FIXED_EXPENSE_CATEGORIES = [
@@ -613,7 +621,8 @@
       'Vivienda / Arriendo',
       'Administración / Cuota Hogar',
       'Internet / Telefonía Fija',
-      'Seguros / Cuotas Obligatorias'
+      'Seguros / Cuotas Obligatorias',
+      'Otros / Personalizada...'
     ];
 
     const VARIABLE_EXPENSE_CATEGORIES = [
@@ -622,7 +631,7 @@
       'Educación / Salud',
       'Entretenimiento / Gustos',
       'Compras Personales / Hormiga',
-      'Otros Gastos Ocasionales'
+      'Otros / Personalizada...'
     ];
 
     const formatMoney = (val) => {
@@ -631,7 +640,7 @@
       return curr.symbol + ' ' + Math.round(num).toLocaleString(curr.locale) + ' ' + currentCurrencyCode;
     };
 
-    // ================= FUNCIONES DE AUTENTICACIÓN DIRECTA =================
+    // ================= FUNCIONES DE AUTENTICACIÓN =================
     window.switchAuthTab = function(mode) {
       const tabLogin = document.getElementById('tab-login');
       const tabRegister = document.getElementById('tab-register');
@@ -747,18 +756,31 @@
         opt.textContent = cat;
         categorySelect.appendChild(opt);
       });
-      checkNoticeVisibility();
+      handleCategoryChange();
     }
 
-    function checkNoticeVisibility() {
+    // Manejador dinámico para mostrar/ocultar aviso y campo personalizado
+    window.handleCategoryChange = function() {
       const categorySelect = document.getElementById('tx-category');
       const serviceNotice = document.getElementById('service-notice');
+      const customBox = document.getElementById('custom-category-box');
+      const customInput = document.getElementById('tx-custom-category');
+
       if (categorySelect.value === 'Servicios Públicos (Luz / Agua / Gas / Tel)') {
         serviceNotice.classList.remove('hidden');
       } else {
         serviceNotice.classList.add('hidden');
       }
-    }
+
+      if (categorySelect.value === 'Otros / Personalizada...') {
+        customBox.classList.remove('hidden');
+        customInput.setAttribute('required', 'required');
+        customInput.focus();
+      } else {
+        customBox.classList.add('hidden');
+        customInput.removeAttribute('required');
+      }
+    };
 
     function render() {
       document.getElementById('label-active-currency').textContent = currentCurrencyCode;
@@ -897,14 +919,11 @@
       render();
     };
 
-    // Inicialización inmediata segura
     function initApp() {
       const txDateInput = document.getElementById('tx-date');
       if (txDateInput) txDateInput.value = new Date().toISOString().split('T')[0];
       
       updateCategoryDropdown('ingreso');
-      const catSelect = document.getElementById('tx-category');
-      if (catSelect) catSelect.onchange = checkNoticeVisibility;
 
       document.getElementById('btn-currency-selector').onclick = () => {
         renderCurrencyModal();
@@ -987,17 +1006,28 @@
         };
       });
 
+      // Guardar Movimiento Contable (con soporte para categoría manual)
       document.getElementById('form-transaction').onsubmit = (e) => {
         e.preventDefault();
+        
+        const rawCategory = document.getElementById('tx-category').value;
+        let finalCategory = rawCategory;
+
+        if (rawCategory === 'Otros / Personalizada...') {
+          const customVal = document.getElementById('tx-custom-category').value.trim();
+          finalCategory = customVal || 'Otros';
+        }
+
         transactions.unshift({
           id: Date.now().toString(),
           flow: txFlowInput.value,
           frequency: txFreqInput.value,
           concept: document.getElementById('tx-concept').value.trim(),
           amount: parseFloat(document.getElementById('tx-amount').value),
-          category: document.getElementById('tx-category').value,
+          category: finalCategory,
           date: document.getElementById('tx-date').value
         });
+
         saveState();
         render();
         document.getElementById('form-transaction').reset();
