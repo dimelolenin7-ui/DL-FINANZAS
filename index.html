@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>DL FINANZAS - DL Company Tecnology</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#080c14">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #070a10;
+      color: #f1f5f9;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-24 lg:pb-12 text-slate-100 selection:bg-emerald-500 selection:text-black">
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-40 bg-[#070a10]/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo Branding DL -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-200 via-slate-400 to-slate-700 p-[1.5px] shadow-lg shadow-black/60 flex items-center justify-center">
+          <div class="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center">
+            <span class="text-xs font-black tracking-tighter bg-gradient-to-br from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">DL</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-extrabold tracking-tight text-white">DL FINANZAS</h1>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mono">COP</span>
+          </div>
+          <p class="text-[9px] font-semibold tracking-wider text-slate-400 uppercase">DL COMPANY TECNOLOGY</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="btn-open-install" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Instalar App
+        </button>
+
+        <button id="btn-open-modal" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 transition-all active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          Registrar
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="relative">
+          <button id="btn-menu-trigger" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+          </button>
+          
+          <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl glass-card py-2 z-50 border border-slate-700/80 shadow-2xl">
+            <button id="btn-export-backup" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/80 hover:text-white flex items-center gap-2.5">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Descargar Copia de Seguridad
+            </button>
+            <label class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/80 hover:text-white flex items-center gap-2.5 cursor-pointer">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Restaurar Copia (.json)
+              <input type="file" id="input-import-backup" accept=".json" class="hidden">
+            </label>
+            <div class="h-[1px] bg-slate-800 my-1"></div>
+            <button id="btn-reset-data" class="w-full text-left px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 flex items-center gap-2.5">
+              <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              Limpiar Todo (Empezar de Cero)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-1 flex flex-col gap-6">
+
+    <!-- Card Resumen Financiero -->
+    <section class="glass-card rounded-3xl p-6 relative overflow-hidden border border-slate-800">
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="text-[11px] font-bold text-emerald-400 tracking-wider uppercase mono flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Ciclo Financiero Hogar
+          </span>
+          <h2 class="text-2xl font-black text-white mt-1">Presupuesto Doméstico</h2>
+          <p class="text-xs text-slate-400">Control de ingresos, pagos y ahorro sin fugas de dinero.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="bg-slate-900/80 border border-slate-800 px-4 py-2.5 rounded-2xl">
+            <p class="text-[10px] text-slate-400 font-medium">TASA DE AHORRO</p>
+            <p id="kpi-savings-rate" class="text-lg font-black text-emerald-400 mono">0.0%</p>
+          </div>
+          <div class="bg-slate-900/80 border border-slate-800 px-4 py-2.5 rounded-2xl">
+            <p class="text-[10px] text-slate-400 font-medium">BALANCE DISPONIBLE</p>
+            <p id="kpi-balance" class="text-lg font-black text-white mono">$ 0 COP</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid KPIs -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-slate-800/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold text-slate-400">INGRESOS</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          </div>
+          <p id="kpi-incomes" class="text-base sm:text-lg font-black text-white mono">$ 0 COP</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Sueldos y entradas</p>
+        </div>
+
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-slate-800/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold text-slate-400">GASTOS FIJOS</span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          </div>
+          <p id="kpi-fixed-expenses" class="text-base sm:text-lg font-black text-white mono">$ 0 COP</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Servicios, arriendo, base</p>
+        </div>
+
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-slate-800/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold text-slate-400">VARIABLES / GUSTOS</span>
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          </div>
+          <p id="kpi-var-expenses" class="text-base sm:text-lg font-black text-white mono">$ 0 COP</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Salidas y ocio</p>
+        </div>
+
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-slate-800/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold text-slate-400">TOTAL GASTOS</span>
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+          </div>
+          <p id="kpi-total-expenses" class="text-base sm:text-lg font-black text-rose-400 mono">$ 0 COP</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Egresos consolidados</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráfica y Semáforo Presupuestal -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Gráfico de Dona -->
+      <section class="glass-card rounded-3xl p-6 border border-slate-800 flex flex-col justify-between">
+        <div>
+          <h3 class="text-sm font-extrabold text-white mb-1">Distribución de Gastos</h3>
+          <p class="text-xs text-slate-400 mb-4">Proporción por categoría mensual</p>
+          <div class="relative w-full aspect-square max-w-[240px] mx-auto flex items-center justify-center">
+            <canvas id="expenses-chart"></canvas>
+            <div id="chart-empty-msg" class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+              <span class="text-xs text-slate-500 font-medium">Sin gastos registrados todavía</span>
+            </div>
+          </div>
+        </div>
+        <div id="chart-legend" class="mt-4 flex flex-wrap gap-2 text-[11px] justify-center text-slate-400"></div>
+      </section>
+
+      <!-- Semáforo de Categorías -->
+      <section class="glass-card rounded-3xl p-6 border border-slate-800 lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-sm font-extrabold text-white">Semáforo de Presupuesto</h3>
+            <p class="text-xs text-slate-400">Control de límites máximos por rubro</p>
+          </div>
+          <button id="btn-open-limits" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-950/40 border border-cyan-800/50 px-3 py-1.5 rounded-xl transition-all">
+            Calibrar Topes
+          </button>
+        </div>
+
+        <div id="budget-progress-list" class="space-y-4"></div>
+      </section>
+
+    </div>
+
+    <!-- Metas de Ahorro y Fondos -->
+    <section class="glass-card rounded-3xl p-6 border border-slate-800">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Metas de Ahorro</h3>
+          <p class="text-xs text-slate-400">Fondos para imprevistos, proyectos y compras</p>
+        </div>
+        <button id="btn-open-goal-modal" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 bg-emerald-950/40 border border-emerald-800/50 px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          Nueva Meta
+        </button>
+      </div>
+
+      <div id="goals-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- Historial de Transacciones -->
+    <section class="glass-card rounded-3xl p-6 border border-slate-800">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Historial de Movimientos</h3>
+          <p class="text-xs text-slate-400">Registro guardado en este dispositivo</p>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <select id="filter-type" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-slate-300 focus:outline-none focus:border-slate-600">
+            <option value="all">Todos los flujos</option>
+            <option value="ingreso">Ingresos</option>
+            <option value="fijo">Fijos Hogar</option>
+            <option value="variable">Variables</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400">
+              <th class="py-2.5 px-3 font-semibold">FECHA</th>
+              <th class="py-2.5 px-3 font-semibold">CONCEPTO</th>
+              <th class="py-2.5 px-3 font-semibold">CATEGORÍA</th>
+              <th class="py-2.5 px-3 font-semibold text-right">VALOR (COP)</th>
+              <th class="py-2.5 px-3 font-semibold text-center">ACCIÓN</th>
+            </tr>
+          </thead>
+          <tbody id="transactions-table-body" class="divide-y divide-slate-800/60"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Registrar Movimiento -->
+  <div id="modal-transaction" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="glass-card bg-[#0b0f19] w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 border border-slate-800 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          Registrar Movimiento
+        </h3>
+        <button id="btn-close-modal" class="text-slate-400 hover:text-white p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-transaction" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Naturaleza del Flujo</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-flow="ingreso" class="flow-btn py-2 px-3 rounded-xl border border-slate-700 text-xs font-bold bg-emerald-500/20 border-emerald-500 text-emerald-300">Ingreso</button>
+            <button type="button" data-flow="fijo" class="flow-btn py-2 px-3 rounded-xl border border-slate-800 text-xs font-bold bg-slate-900 text-slate-400">Fijo Hogar</button>
+            <button type="button" data-flow="variable" class="flow-btn py-2 px-3 rounded-xl border border-slate-800 text-xs font-bold bg-slate-900 text-slate-400">Variable</button>
+          </div>
+          <input type="hidden" id="tx-flow" value="ingreso">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Concepto / Detalle</label>
+          <input type="text" id="tx-concept" required placeholder="Ej: Sueldo mensual, Arriendo, Internet..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Monto en Pesos Colombianos ($ COP)</label>
+          <input type="number" id="tx-amount" required placeholder="Ej: 1930000" min="1" step="100" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría</label>
+          <select id="tx-category" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+            <option value="Salario / Nómina">Salario / Nómina</option>
+            <option value="Vivienda y Servicios">Vivienda y Servicios</option>
+            <option value="Alimentación y Mercado">Alimentación y Mercado</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Educación / Salud">Educación / Salud</option>
+            <option value="Entretenimiento / Gustos">Entretenimiento / Gustos</option>
+            <option value="Otros Ingresos">Otros Ingresos</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha</label>
+          <input type="date" id="tx-date" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/20 active:scale-98">
+            Guardar Transacción
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Calibrar Topes Presupuestales -->
+  <div id="modal-limits" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card bg-[#0b0f19] w-full max-w-md rounded-3xl p-6 border border-slate-800">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <h3 class="text-sm font-extrabold text-white">Calibrar Topes Mensuales (COP)</h3>
+        <button id="btn-close-limits" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <form id="form-limits" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Vivienda y Servicios</label>
+          <input type="number" id="limit-housing" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Alimentación y Mercado</label>
+          <input type="number" id="limit-food" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Transporte</label>
+          <input type="number" id="limit-transport" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Entretenimiento / Gustos</label>
+          <input type="number" id="limit-fun" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs uppercase transition-all mt-4">
+          Actualizar Topes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Crear Meta de Ahorro -->
+  <div id="modal-goal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card bg-[#0b0f19] w-full max-w-md rounded-3xl p-6 border border-slate-800">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <h3 class="text-sm font-extrabold text-white">Nueva Meta de Ahorro</h3>
+        <button id="btn-close-goal" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <form id="form-goal" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nombre del Objetivo</label>
+          <input type="text" id="goal-name" required placeholder="Ej: Fondo de Emergencia..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Monto Objetivo ($ COP)</label>
+          <input type="number" id="goal-target" required placeholder="Ej: 3000000" min="1000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Aporte Inicial ($ COP)</label>
+          <input type="number" id="goal-current" value="0" min="0" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white mono">
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase transition-all mt-4">
+          Crear Meta
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Instrucciones de Instalación -->
+  <div id="modal-install" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card bg-[#0b0f19] w-full max-w-sm rounded-3xl p-6 border border-slate-800 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-slate-700 mx-auto mb-3 flex items-center justify-center text-emerald-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      </div>
+      <h3 class="text-base font-extrabold text-white mb-2">Instalar DL FINANZAS</h3>
+      <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+        <strong>Android (Chrome):</strong> Toca los tres puntos <span class="text-white font-bold">⋮</span> y pulsa <em>"Agregar a pantalla principal"</em>.<br><br>
+        <strong>iPhone (Safari):</strong> Toca <em>Compartir</em> y elige <em>"Agregar al inicio"</em>.
+      </p>
+      <button id="btn-close-install" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">
+        Entendido
+      </button>
+    </div>
+  </div>
+
+  <!-- Lógica Principal -->
+  <script>
+    const formatCOP = (val) => {
+      const num = Number(val) || 0;
+      return '$ ' + Math.round(num).toLocaleString('es-CO') + ' COP';
+    };
+
+    const STORAGE_KEY_TX = 'dl_finanzas_tx';
+    const STORAGE_KEY_LIMITS = 'dl_finanzas_limits';
+    const STORAGE_KEY_GOALS = 'dl_finanzas_goals';
+
+    let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY_TX)) || [];
+    let limits = JSON.parse(localStorage.getItem(STORAGE_KEY_LIMITS)) || {
+      'Vivienda y Servicios': 1200000,
+      'Alimentación y Mercado': 800000,
+      'Transporte': 350000,
+      'Entretenimiento / Gustos': 200000
+    };
+    let goals = JSON.parse(localStorage.getItem(STORAGE_KEY_GOALS)) || [
+      { id: '1', name: 'Fondo de Imprevistos', target: 2000000, current: 0 }
+    ];
+
+    let expenseChartInstance = null;
+
+    const kpiBalance = document.getElementById('kpi-balance');
+    const kpiSavingsRate = document.getElementById('kpi-savings-rate');
+    const kpiIncomes = document.getElementById('kpi-incomes');
+    const kpiFixed = document.getElementById('kpi-fixed-expenses');
+    const kpiVar = document.getElementById('kpi-var-expenses');
+    const kpiTotalExp = document.getElementById('kpi-total-expenses');
+    const tableBody = document.getElementById('transactions-table-body');
+    const budgetList = document.getElementById('budget-progress-list');
+    const goalsContainer = document.getElementById('goals-container');
+    const filterType = document.getElementById('filter-type');
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+      localStorage.setItem(STORAGE_KEY_LIMITS, JSON.stringify(limits));
+      localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(goals));
+      render();
+    }
+
+    function render() {
+      let totalIncome = 0;
+      let totalFixed = 0;
+      let totalVar = 0;
+      const categoryExpenses = {};
+
+      transactions.forEach(t => {
+        const amt = Number(t.amount) || 0;
+        if (t.flow === 'ingreso') {
+          totalIncome += amt;
+        } else if (t.flow === 'fijo') {
+          totalFixed += amt;
+          categoryExpenses[t.category] = (categoryExpenses[t.category] || 0) + amt;
+        } else if (t.flow === 'variable') {
+          totalVar += amt;
+          categoryExpenses[t.category] = (categoryExpenses[t.category] || 0) + amt;
+        }
+      });
+
+      const totalExpenses = totalFixed + totalVar;
+      const balance = totalIncome - totalExpenses;
+      const savingsRate = totalIncome > 0 ? Math.max(0, ((balance / totalIncome) * 100)).toFixed(1) : '0.0';
+
+      kpiBalance.textContent = formatCOP(balance);
+      kpiSavingsRate.textContent = savingsRate + '%';
+      kpiIncomes.textContent = formatCOP(totalIncome);
+      kpiFixed.textContent = formatCOP(totalFixed);
+      kpiVar.textContent = formatCOP(totalVar);
+      kpiTotalExp.textContent = formatCOP(totalExpenses);
+
+      const currentFilter = filterType.value;
+      const filtered = transactions.filter(t => currentFilter === 'all' || t.flow === currentFilter);
+
+      tableBody.innerHTML = '';
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-500 font-medium">No hay movimientos registrados. Toca "+ Registrar" para comenzar.</td></tr>`;
+      } else {
+        filtered.forEach(t => {
+          const isIncome = t.flow === 'ingreso';
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-800/30 transition-colors";
+          tr.innerHTML = `
+            <td class="py-3 px-3 text-slate-400 mono">${t.date || '---'}</td>
+            <td class="py-3 px-3 font-semibold text-white">${t.concept}</td>
+            <td class="py-3 px-3 text-slate-300">
+              <span class="px-2 py-0.5 rounded-full text-[10px] ${isIncome ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
+                ${t.category}
+              </span>
+            </td>
+            <td class="py-3 px-3 text-right font-bold mono ${isIncome ? 'text-emerald-400' : 'text-slate-200'}">
+              ${isIncome ? '+' : '-'} ${formatCOP(t.amount)}
+            </td>
+            <td class="py-3 px-3 text-center">
+              <button onclick="deleteTx('${t.id}')" class="p-1 text-slate-500 hover:text-rose-400 transition-colors" title="Eliminar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      budgetList.innerHTML = '';
+      Object.keys(limits).forEach(cat => {
+        const spent = categoryExpenses[cat] || 0;
+        const limit = limits[cat] || 1;
+        const pct = Math.min(100, Math.round((spent / limit) * 100));
+        
+        let barColor = 'bg-emerald-400';
+        let statusBadge = '<span class="text-emerald-400">En margen</span>';
+        if (pct >= 85 && pct < 100) {
+          barColor = 'bg-amber-400';
+          statusBadge = '<span class="text-amber-400">Cerca del tope</span>';
+        } else if (pct >= 100) {
+          barColor = 'bg-rose-500';
+          statusBadge = '<span class="text-rose-400 font-bold">Límite alcanzado</span>';
+        }
+
+        const div = document.createElement('div');
+        div.className = "bg-slate-900/40 rounded-2xl p-3 border border-slate-800/80";
+        div.innerHTML = `
+          <div class="flex justify-between items-center mb-1 text-xs">
+            <span class="font-bold text-white">${cat}</span>
+            <span class="text-[10px]">${statusBadge}</span>
+          </div>
+          <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1.5">
+            <div class="${barColor} h-full transition-all duration-500" style="width: ${pct}%"></div>
+          </div>
+          <div class="flex justify-between text-[11px] text-slate-400 mono">
+            <span>Gastado: ${formatCOP(spent)}</span>
+            <span>Tope: ${formatCOP(limit)} (${pct}%)</span>
+          </div>
+        `;
+        budgetList.appendChild(div);
+      });
+
+      goalsContainer.innerHTML = '';
+      goals.forEach(g => {
+        const pct = Math.min(100, Math.round(((g.current || 0) / g.target) * 100));
+        const card = document.createElement('div');
+        card.className = "bg-slate-900/60 rounded-2xl p-4 border border-slate-800 relative flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-bold text-xs text-white">${g.name}</h4>
+              <span class="text-xs font-black text-emerald-400 mono">${pct}%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
+              <div class="bg-emerald-400 h-full transition-all" style="width: ${pct}%"></div>
+            </div>
+            <div class="text-[11px] text-slate-400 mono flex justify-between mb-3">
+              <span>${formatCOP(g.current)}</span>
+              <span>Meta: ${formatCOP(g.target)}</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="addGoalDeposit('${g.id}')" class="flex-1 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold hover:bg-emerald-500/30 transition-all">
+              + Abonar
+            </button>
+            <button onclick="deleteGoal('${g.id}')" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:text-rose-400 text-slate-400 text-[11px]">
+              ✕
+            </button>
+          </div>
+        `;
+        goalsContainer.appendChild(card);
+      });
+
+      renderExpensesChart(categoryExpenses);
+    }
+
+    function renderExpensesChart(categoryExpenses) {
+      const labels = Object.keys(categoryExpenses);
+      const data = Object.values(categoryExpenses);
+      const emptyMsg = document.getElementById('chart-empty-msg');
+      const chartCanvas = document.getElementById('expenses-chart');
+
+      if (data.length === 0 || data.every(v => v === 0)) {
+        emptyMsg.classList.remove('hidden');
+        if (expenseChartInstance) {
+          expenseChartInstance.destroy();
+          expenseChartInstance = null;
+        }
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      const colors = ['#10b981', '#06b6d4', '#f59e0b', '#ec4899', '#8b5cf6', '#64748b'];
+
+      if (window.Chart) {
+        if (expenseChartInstance) {
+          expenseChartInstance.data.labels = labels;
+          expenseChartInstance.data.datasets[0].data = data;
+          expenseChartInstance.update();
+        } else {
+          expenseChartInstance = new Chart(chartCanvas, {
+            type: 'doughnut',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: data,
+                backgroundColor: colors.slice(0, labels.length),
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: false }
+              },
+              cutout: '72%'
+            }
+          });
+        }
+      }
+    }
+
+    window.deleteTx = function(id) {
+      transactions = transactions.filter(t => t.id !== id);
+      saveState();
+    };
+
+    window.addGoalDeposit = function(id) {
+      const goal = goals.find(g => g.id === id);
+      if (!goal) return;
+      const input = prompt(`Monto a aportar a "${goal.name}" en pesos COP:`);
+      if (input) {
+        const val = parseFloat(input);
+        if (!isNaN(val) && val > 0) {
+          goal.current = (goal.current || 0) + val;
+          saveState();
+        }
+      }
+    };
+
+    window.deleteGoal = function(id) {
+      if (confirm("¿Eliminar esta meta de ahorro?")) {
+        goals = goals.filter(g => g.id !== id);
+        saveState();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+
+      const modalTx = document.getElementById('modal-transaction');
+      document.getElementById('btn-open-modal').onclick = () => modalTx.classList.remove('hidden');
+      document.getElementById('btn-close-modal').onclick = () => modalTx.classList.add('hidden');
+
+      const modalLimits = document.getElementById('modal-limits');
+      document.getElementById('btn-open-limits').onclick = () => {
+        document.getElementById('limit-housing').value = limits['Vivienda y Servicios'] || '';
+        document.getElementById('limit-food').value = limits['Alimentación y Mercado'] || '';
+        document.getElementById('limit-transport').value = limits['Transporte'] || '';
+        document.getElementById('limit-fun').value = limits['Entretenimiento / Gustos'] || '';
+        modalLimits.classList.remove('hidden');
+      };
+      document.getElementById('btn-close-limits').onclick = () => modalLimits.classList.add('hidden');
+
+      const modalGoal = document.getElementById('modal-goal');
+      document.getElementById('btn-open-goal-modal').onclick = () => modalGoal.classList.remove('hidden');
+      document.getElementById('btn-close-goal').onclick = () => modalGoal.classList.add('hidden');
+
+      const modalInstall = document.getElementById('modal-install');
+      document.getElementById('btn-open-install').onclick = () => modalInstall.classList.remove('hidden');
+      document.getElementById('btn-close-install').onclick = () => modalInstall.classList.add('hidden');
+
+      const menuTrigger = document.getElementById('btn-menu-trigger');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      menuTrigger.onclick = (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+      };
+      document.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
+
+      const flowButtons = document.querySelectorAll('.flow-btn');
+      const txFlowInput = document.getElementById('tx-flow');
+      flowButtons.forEach(btn => {
+        btn.onclick = () => {
+          flowButtons.forEach(b => {
+            b.className = "flow-btn py-2 px-3 rounded-xl border border-slate-800 text-xs font-bold bg-slate-900 text-slate-400";
+          });
+          const flow = btn.getAttribute('data-flow');
+          txFlowInput.value = flow;
+          btn.className = "flow-btn py-2 px-3 rounded-xl border border-emerald-500 text-xs font-bold bg-emerald-500/20 text-emerald-300";
+        };
+      });
+
+      document.getElementById('form-transaction').onsubmit = (e) => {
+        e.preventDefault();
+        const newTx = {
+          id: Date.now().toString(),
+          flow: document.getElementById('tx-flow').value,
+          concept: document.getElementById('tx-concept').value.trim(),
+          amount: parseFloat(document.getElementById('tx-amount').value),
+          category: document.getElementById('tx-category').value,
+          date: document.getElementById('tx-date').value
+        };
+        transactions.unshift(newTx);
+        saveState();
+        document.getElementById('form-transaction').reset();
+        document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+        modalTx.classList.add('hidden');
+      };
+
+      document.getElementById('form-limits').onsubmit = (e) => {
+        e.preventDefault();
+        limits['Vivienda y Servicios'] = parseFloat(document.getElementById('limit-housing').value) || 0;
+        limits['Alimentación y Mercado'] = parseFloat(document.getElementById('limit-food').value) || 0;
+        limits['Transporte'] = parseFloat(document.getElementById('limit-transport').value) || 0;
+        limits['Entretenimiento / Gustos'] = parseFloat(document.getElementById('limit-fun').value) || 0;
+        saveState();
+        modalLimits.classList.add('hidden');
+      };
+
+      document.getElementById('form-goal').onsubmit = (e) => {
+        e.preventDefault();
+        const newGoal = {
+          id: Date.now().toString(),
+          name: document.getElementById('goal-name').value.trim(),
+          target: parseFloat(document.getElementById('goal-target').value) || 1000,
+          current: parseFloat(document.getElementById('goal-current').value) || 0
+        };
+        goals.push(newGoal);
+        saveState();
+        document.getElementById('form-goal').reset();
+        modalGoal.classList.add('hidden');
+      };
+
+      filterType.onchange = render;
+
+      document.getElementById('btn-export-backup').onclick = () => {
+        const data = { transactions, limits, goals, exportedAt: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `DL_Finanzas_Respaldo_${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      document.getElementById('input-import-backup').onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const imported = JSON.parse(event.target.result);
+            if (imported.transactions && Array.isArray(imported.transactions)) {
+              transactions = imported.transactions;
+              if (imported.limits) limits = imported.limits;
+              if (imported.goals) goals = imported.goals;
+              saveState();
+              alert("Datos restaurados correctamente.");
+            } else {
+              alert("Archivo no compatible.");
+            }
+          } catch (err) {
+            alert("Error al leer el archivo JSON.");
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      document.getElementById('btn-reset-data').onclick = () => {
+        if (confirm("¿Estás seguro de restablecer toda la app a ceros?")) {
+          transactions = [];
+          goals = [];
+          saveState();
+        }
+      };
+
+      render();
+    });
+  </script>
+</body>
+</html>
