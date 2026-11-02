@@ -80,10 +80,10 @@
     .btn-google {
       width: 100%; background: #ffffff; color: #1e293b; font-weight: 700;
       font-size: 13px; border: 1px solid #cbd5e1; border-radius: 12px;
-      padding: 11px 14px; display: flex; align-items: center; justify-content: center;
+      padding: 12px 14px; display: flex; align-items: center; justify-content: center;
       gap: 10px; cursor: pointer; margin-top: 10px; transition: background 0.2s;
     }
-    .btn-google:hover { background: #f8fafc; }
+    .btn-google:active { background: #e2e8f0; }
 
     /* Currency Badge */
     .currency-badge {
@@ -159,9 +159,9 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.8);
     }
     .auth-tab {
-      flex: 1; padding: 8px; font-size: 12px; font-weight: 700; text-align: center;
+      flex: 1; padding: 10px; font-size: 13px; font-weight: 700; text-align: center;
       background: transparent; border: none; color: #94a3b8; cursor: pointer;
-      border-bottom: 2px solid transparent;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
     }
     .auth-tab.active {
       color: #10b981; border-color: #10b981;
@@ -176,9 +176,9 @@
   <section id="auth-screen">
     <div class="auth-card">
       
-      <!-- Branding Logo DL -->
+      <!-- Logo Oficial DL Metal -->
       <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px;">
-        <div class="logo-container" style="width: 58px; height: 58px; margin-bottom: 12px; border-radius: 16px;">
+        <div class="logo-container" style="width: 62px; height: 62px; margin-bottom: 12px; border-radius: 18px;">
           <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <radialGradient id="metalBgAuth" cx="40%" cy="30%" r="70%">
@@ -205,12 +205,12 @@
 
       <!-- Pestañas Acceso / Registro -->
       <div style="display: flex; border-bottom: 1px solid #1e293b; margin-bottom: 20px;">
-        <button id="tab-login" class="auth-tab active" type="button">Iniciar Sesión</button>
-        <button id="tab-register" class="auth-tab" type="button">Crear Cuenta</button>
+        <button id="tab-login" class="auth-tab active" type="button" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+        <button id="tab-register" class="auth-tab" type="button" onclick="switchAuthTab('register')">Crear Cuenta</button>
       </div>
 
       <!-- Formulario Login -->
-      <form id="form-login">
+      <form id="form-login" onsubmit="handleLoginSubmit(event)">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Correo Electrónico</label>
         <input type="email" id="login-email" required placeholder="tu-correo@ejemplo.com" class="input-field">
 
@@ -223,7 +223,7 @@
       </form>
 
       <!-- Formulario Registro -->
-      <form id="form-register" class="hidden">
+      <form id="form-register" class="hidden" onsubmit="handleRegisterSubmit(event)">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Nombre Completo</label>
         <input type="text" id="reg-name" required placeholder="Ej: Lenin..." class="input-field">
 
@@ -241,12 +241,12 @@
         </button>
       </form>
 
-      <!-- Botón Google -->
+      <!-- Botón Google con activación directa -->
       <div style="position: relative; margin: 20px 0 10px; text-align: center;">
         <span style="background: #0f172a; padding: 0 10px; font-size: 10px; color: #64748b; font-weight: 700;">O ACCEDE RÁPIDO CON</span>
       </div>
 
-      <button id="btn-login-google" type="button" class="btn-google">
+      <button id="btn-login-google" type="button" class="btn-google" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -270,7 +270,6 @@
     <header class="header-bar">
       <div style="display: flex; align-items: center; gap: 10px;">
         
-        <!-- Logo DL -->
         <div class="logo-container" title="DL Company Tecnology">
           <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -317,14 +316,13 @@
           <span>+ Movimiento</span>
         </button>
 
-        <!-- Dropdown Usuario y Opciones -->
+        <!-- Dropdown Usuario -->
         <div style="position: relative;">
           <button id="btn-menu-trigger" class="btn-icon">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
           </button>
 
           <div id="dropdown-menu" class="dropdown hidden">
-            <!-- Info Usuario Activo -->
             <div style="padding: 12px 16px; border-bottom: 1px solid #1e293b; background: #070a10;">
               <p id="user-display-name" style="font-size: 12px; font-weight: 800; color: #fff;"></p>
               <p id="user-display-id" style="font-size: 10px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;"></p>
@@ -391,4 +389,678 @@
 
       <!-- Semáforo y Topes -->
       <section class="card">
-        <div style="display: flex; justify-content: space-between; 
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div>
+            <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Semáforo de Presupuesto</h3>
+            <p style="font-size: 11px; color: #94a3b8;">Control de gastos frente a topes máximos por categoría</p>
+          </div>
+          <button id="btn-open-limits" class="btn-gray">Calibrar Topes</button>
+        </div>
+        <div id="budget-progress-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+      </section>
+
+      <!-- Historial de Transacciones -->
+      <section class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Movimientos Registrados</h3>
+          <select id="filter-type" style="background: #0b1120; color: #cbd5e1; border: 1px solid #334155; padding: 4px 8px; border-radius: 8px; font-size: 11px;">
+            <option value="all">Todos los movimientos</option>
+            <option value="ingreso">Solo Ingresos (+)</option>
+            <option value="fijo">Gastos Fijos y Servicios (-)</option>
+            <option value="variable">Gastos Variables / Compras (-)</option>
+          </select>
+        </div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid #1e293b; color: #64748b;">
+                <th style="padding: 8px 4px;">FECHA</th>
+                <th style="padding: 8px 4px;">TIPO</th>
+                <th style="padding: 8px 4px;">CONCEPTO</th>
+                <th style="padding: 8px 4px;">CATEGORÍA</th>
+                <th style="padding: 8px 4px;">MODALIDAD</th>
+                <th style="padding: 8px 4px; text-align: right;">VALOR</th>
+                <th style="padding: 8px 4px; text-align: center;"></th>
+              </tr>
+            </thead>
+            <tbody id="transactions-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Modal: Selector de Moneda -->
+  <div id="modal-currency" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width: 380px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Seleccionar Moneda Local</h3>
+        <button id="btn-close-currency" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">Elige la divisa en la que deseas visualizar todos los importes:</p>
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="currency-options-list"></div>
+    </div>
+  </div>
+
+  <!-- Modal: Añadir Movimiento -->
+  <div id="modal-transaction" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Añadir Movimiento Contable</h3>
+        <button id="btn-close-modal" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form id="form-transaction">
+        
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Tipo de Flujo</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
+          <button type="button" data-flow="ingreso" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 11px; font-weight: 800; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer; text-align:center;">
+            + Ingreso
+          </button>
+          <button type="button" data-flow="fijo" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer; text-align:center;">
+            - Gasto Fijo / Servicios
+          </button>
+          <button type="button" data-flow="variable" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 10px; font-weight: 800; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer; text-align:center;">
+            - Variable / Compras
+          </button>
+        </div>
+        <input type="hidden" id="tx-flow" value="ingreso">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Modalidad de Pago o Consumo</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
+          <button type="button" data-freq="mensual" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer;">Mensual (30d)</button>
+          <button type="button" data-freq="quincenal" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Quincenal (15d)</button>
+          <button type="button" data-freq="factura" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Factura en Mano</button>
+        </div>
+        <input type="hidden" id="tx-frequency" value="mensual">
+
+        <div id="service-notice" class="notice-box hidden">
+          💡 <strong>Servicio Público Registrado:</strong> Se contabilizará como <em>Gasto Fijo</em> de tu hogar con el valor real de la factura que te llegó.
+        </div>
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Categoría del Movimiento</label>
+        <select id="tx-category" class="input-field"></select>
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Concepto / Detalle</label>
+        <input type="text" id="tx-concept" required placeholder="Ej: Sueldo, Recibo Luz, Arriendo, Mercado..." class="input-field">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto (<span id="modal-amount-currency">COP</span>)</label>
+        <input type="number" id="tx-amount" required placeholder="Ej: 150000" min="0.01" step="any" class="input-field mono">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Fecha de Pago</label>
+        <input type="date" id="tx-date" required class="input-field">
+
+        <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
+          Guardar Movimiento Contable
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Calibrar Topes -->
+  <div id="modal-limits" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Calibrar Topes Mensuales (<span id="modal-limits-currency">COP</span>)</h3>
+        <button id="btn-close-limits" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form id="form-limits">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Servicios Públicos (Luz / Agua / Gas / Tel)</label>
+        <input type="number" id="limit-services" class="input-field mono" step="any">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Vivienda / Arriendo</label>
+        <input type="number" id="limit-housing" class="input-field mono" step="any">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Alimentación y Mercado</label>
+        <input type="number" id="limit-food" class="input-field mono" step="any">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Transporte / Gasolina</label>
+        <input type="number" id="limit-transport" class="input-field mono" step="any">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Entretenimiento / Gustos</label>
+        <input type="number" id="limit-fun" class="input-field mono" step="any">
+        <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
+          Guardar Nuevos Topes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Instalar -->
+  <div id="modal-install" class="modal-overlay hidden">
+    <div class="modal-content" style="text-align: center;">
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 8px;">Instalar DL FINANZAS</h3>
+      <p style="font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+        <strong>Android (Chrome):</strong> Toca los 3 puntos arriba a la derecha ⋮ y selecciona <em>"Agregar a pantalla principal"</em> o <em>"Instalar app"</em>.<br><br>
+        <strong>iPhone (Safari):</strong> Toca el botón <em>Compartir</em> y selecciona <em>"Agregar al inicio"</em>.
+      </p>
+      <button id="btn-close-install" class="btn-gray" style="width: 100%; justify-content: center;">Entendido</button>
+    </div>
+  </div>
+
+  <script>
+    // ================= VARIABLES Y ALMACENAMIENTO PERMANENTE =================
+    const STORAGE_KEY_AUTH = 'dl_finanzas_session';
+    const STORAGE_KEY_USERS = 'dl_finanzas_registered_users';
+    const STORAGE_KEY_TX_PERMANENT = 'dl_finanzas_database_tx_master';
+    const STORAGE_KEY_LIMITS_PERMANENT = 'dl_finanzas_database_limits_master';
+    const STORAGE_KEY_CURRENCY_PERMANENT = 'dl_finanzas_database_currency_master';
+
+    function recoverPreviousTransactions() {
+      const candidates = [
+        STORAGE_KEY_TX_PERMANENT,
+        'dl_finanzas_tx',
+        'domus_dl_transactions_v2',
+        'domus_dl_transactions_v1'
+      ];
+      for (const key of candidates) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch(e) {}
+      }
+      return [];
+    }
+
+    function recoverPreviousLimits() {
+      const candidates = [
+        STORAGE_KEY_LIMITS_PERMANENT,
+        'dl_finanzas_limits',
+        'domus_dl_limits_v2'
+      ];
+      for (const key of candidates) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object') return parsed;
+          }
+        } catch(e) {}
+      }
+      return {
+        'Servicios Públicos (Luz / Agua / Gas / Tel)': 450000,
+        'Vivienda / Arriendo': 1200000,
+        'Alimentación y Mercado': 800000,
+        'Transporte / Gasolina': 350000,
+        'Entretenimiento / Gustos': 200000
+      };
+    }
+
+    let transactions = recoverPreviousTransactions();
+    let limits = recoverPreviousLimits();
+    let currentCurrencyCode = localStorage.getItem(STORAGE_KEY_CURRENCY_PERMANENT) || localStorage.getItem('dl_finanzas_currency') || 'COP';
+
+    const CURRENCIES = {
+      'COP': { label: 'Peso Colombiano (COP)', locale: 'es-CO', symbol: '$' },
+      'USD': { label: 'Dólar Estadounidense (USD)', locale: 'en-US', symbol: '$' },
+      'EUR': { label: 'Euro (EUR)', locale: 'es-ES', symbol: '€' },
+      'MXN': { label: 'Peso Mexicano (MXN)', locale: 'es-MX', symbol: '$' },
+      'PEN': { label: 'Sol Peruano (PEN)', locale: 'es-PE', symbol: 'S/' },
+      'CLP': { label: 'Peso Chileno (CLP)', locale: 'es-CL', symbol: '$' },
+      'ARS': { label: 'Peso Argentino (ARS)', locale: 'es-AR', symbol: '$' }
+    };
+
+    const INCOME_CATEGORIES = [
+      'Salario / Nómina',
+      'Ventas / Negocio Propio',
+      'Honorarios / Comisiones',
+      'Rentas e Inversiones',
+      'Otros Ingresos'
+    ];
+
+    const FIXED_EXPENSE_CATEGORIES = [
+      'Servicios Públicos (Luz / Agua / Gas / Tel)',
+      'Vivienda / Arriendo',
+      'Administración / Cuota Hogar',
+      'Internet / Telefonía Fija',
+      'Seguros / Cuotas Obligatorias'
+    ];
+
+    const VARIABLE_EXPENSE_CATEGORIES = [
+      'Alimentación y Mercado',
+      'Transporte / Gasolina',
+      'Educación / Salud',
+      'Entretenimiento / Gustos',
+      'Compras Personales / Hormiga',
+      'Otros Gastos Ocasionales'
+    ];
+
+    const formatMoney = (val) => {
+      const curr = CURRENCIES[currentCurrencyCode] || CURRENCIES['COP'];
+      const num = Number(val) || 0;
+      return curr.symbol + ' ' + Math.round(num).toLocaleString(curr.locale) + ' ' + currentCurrencyCode;
+    };
+
+    // ================= FUNCIONES DE AUTENTICACIÓN DIRECTA =================
+    window.switchAuthTab = function(mode) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin = document.getElementById('form-login');
+      const formRegister = document.getElementById('form-register');
+
+      if (mode === 'register') {
+        tabRegister.classList.add('active');
+        tabLogin.classList.remove('active');
+        formRegister.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+      } else {
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        formLogin.classList.remove('hidden');
+        formRegister.classList.add('hidden');
+      }
+    };
+
+    window.loginWithGoogle = function() {
+      const googleUser = {
+        name: 'Usuario Google',
+        idNumber: 'Google-Verified',
+        email: 'usuario.google@gmail.com'
+      };
+      localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(googleUser));
+      checkAuth();
+    };
+
+    window.handleRegisterSubmit = function(e) {
+      e.preventDefault();
+      const newUser = {
+        name: document.getElementById('reg-name').value.trim(),
+        idNumber: document.getElementById('reg-id').value.trim(),
+        email: document.getElementById('reg-email').value.trim().toLowerCase(),
+        password: document.getElementById('reg-password').value
+      };
+
+      let users = [];
+      try {
+        users = JSON.parse(localStorage.getItem(STORAGE_KEY_USERS)) || [];
+      } catch(err) { users = []; }
+
+      users.push(newUser);
+      localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+      localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(newUser));
+      checkAuth();
+    };
+
+    window.handleLoginSubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pass = document.getElementById('login-password').value;
+
+      let users = [];
+      try {
+        users = JSON.parse(localStorage.getItem(STORAGE_KEY_USERS)) || [];
+      } catch(err) { users = []; }
+
+      const found = users.find(u => u.email === email && u.password === pass);
+      if (found) {
+        localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(found));
+        checkAuth();
+      } else if (users.length === 0) {
+        const guestUser = { name: 'Titular Registrado', idNumber: 'Principal', email: email };
+        localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(guestUser));
+        checkAuth();
+      } else {
+        alert("Correo o contraseña incorrectos. Si aún no te has registrado, pulsa en 'Crear Cuenta'.");
+      }
+    };
+
+    function checkAuth() {
+      let session = null;
+      try {
+        session = JSON.parse(localStorage.getItem(STORAGE_KEY_AUTH));
+      } catch(e) { session = null; }
+
+      const authScreen = document.getElementById('auth-screen');
+      const appScreen = document.getElementById('app-screen');
+
+      if (session) {
+        authScreen.classList.add('hidden');
+        appScreen.classList.remove('hidden');
+        document.getElementById('user-display-name').textContent = session.name || 'Usuario';
+        document.getElementById('user-display-id').textContent = session.idNumber ? `ID: ${session.idNumber}` : session.email;
+        saveState();
+        render();
+      } else {
+        authScreen.classList.remove('hidden');
+        appScreen.classList.add('hidden');
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY_TX_PERMANENT, JSON.stringify(transactions));
+      localStorage.setItem(STORAGE_KEY_LIMITS_PERMANENT, JSON.stringify(limits));
+      localStorage.setItem(STORAGE_KEY_CURRENCY_PERMANENT, currentCurrencyCode);
+      localStorage.setItem('dl_finanzas_tx', JSON.stringify(transactions));
+    }
+
+    function updateCategoryDropdown(flow) {
+      const categorySelect = document.getElementById('tx-category');
+      categorySelect.innerHTML = '';
+      let list = [];
+      if (flow === 'ingreso') list = INCOME_CATEGORIES;
+      else if (flow === 'fijo') list = FIXED_EXPENSE_CATEGORIES;
+      else list = VARIABLE_EXPENSE_CATEGORIES;
+
+      list.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
+      });
+      checkNoticeVisibility();
+    }
+
+    function checkNoticeVisibility() {
+      const categorySelect = document.getElementById('tx-category');
+      const serviceNotice = document.getElementById('service-notice');
+      if (categorySelect.value === 'Servicios Públicos (Luz / Agua / Gas / Tel)') {
+        serviceNotice.classList.remove('hidden');
+      } else {
+        serviceNotice.classList.add('hidden');
+      }
+    }
+
+    function render() {
+      document.getElementById('label-active-currency').textContent = currentCurrencyCode;
+      document.getElementById('modal-amount-currency').textContent = currentCurrencyCode;
+      document.getElementById('modal-limits-currency').textContent = currentCurrencyCode;
+
+      let totalMonthlyIncome = 0;
+      let totalMonthlyFixed = 0;
+      let totalMonthlyVar = 0;
+      const catExpenses = {};
+
+      transactions.forEach(t => {
+        const rawAmt = Number(t.amount) || 0;
+        let monthlyFactor = 1;
+        if (t.frequency === 'quincenal') monthlyFactor = 2;
+        const computedVal = rawAmt * monthlyFactor;
+
+        if (t.flow === 'ingreso') {
+          totalMonthlyIncome += computedVal;
+        } else if (t.flow === 'fijo') {
+          totalMonthlyFixed += computedVal;
+          catExpenses[t.category] = (catExpenses[t.category] || 0) + computedVal;
+        } else if (t.flow === 'variable') {
+          totalMonthlyVar += rawAmt;
+          catExpenses[t.category] = (catExpenses[t.category] || 0) + rawAmt;
+        }
+      });
+
+      const totalMonthlyExpenses = totalMonthlyFixed + totalMonthlyVar;
+      const balance = totalMonthlyIncome - totalMonthlyExpenses;
+      const rate = totalMonthlyIncome > 0 ? Math.max(0, ((balance / totalMonthlyIncome) * 100)).toFixed(1) : '0.0';
+
+      document.getElementById('kpi-balance').textContent = formatMoney(balance);
+      document.getElementById('kpi-savings-rate').textContent = rate + '%';
+      document.getElementById('kpi-incomes').textContent = formatMoney(totalMonthlyIncome);
+      document.getElementById('kpi-fixed-expenses').textContent = formatMoney(totalMonthlyFixed);
+      document.getElementById('kpi-var-expenses').textContent = formatMoney(totalMonthlyVar);
+      document.getElementById('kpi-total-expenses').textContent = formatMoney(totalMonthlyExpenses);
+
+      const f = document.getElementById('filter-type').value;
+      const filtered = transactions.filter(t => f === 'all' || t.flow === f);
+      const tableBody = document.getElementById('transactions-table-body');
+      tableBody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" style="padding: 16px; text-align: center; color: #64748b;">No hay movimientos aún. Presiona "+ Movimiento" arriba.</td></tr>`;
+      } else {
+        filtered.forEach(t => {
+          const isInc = t.flow === 'ingreso';
+          let badgeType = '';
+          if (t.flow === 'ingreso') {
+            badgeType = `<span class="tag-type" style="background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);">+ Ingreso</span>`;
+          } else if (t.flow === 'fijo') {
+            badgeType = `<span class="tag-type" style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3);">- Gasto Fijo</span>`;
+          } else {
+            badgeType = `<span class="tag-type" style="background:rgba(251,146,60,0.15); color:#fb923c; border:1px solid rgba(251,146,60,0.3);">- Variable</span>`;
+          }
+
+          let freqLabel = 'Mensual';
+          if (t.frequency === 'quincenal') freqLabel = 'Quincenal (x2/m)';
+          else if (t.frequency === 'factura') freqLabel = 'Factura Real';
+
+          const tr = document.createElement('tr');
+          tr.style.borderBottom = '1px solid #1e293b';
+          tr.innerHTML = `
+            <td class="mono" style="padding: 8px 4px; color: #94a3b8;">${t.date}</td>
+            <td style="padding: 8px 4px;">${badgeType}</td>
+            <td style="padding: 8px 4px; font-weight: 700; color: #fff;">${t.concept}</td>
+            <td style="padding: 8px 4px; color: #cbd5e1;">${t.category}</td>
+            <td style="padding: 8px 4px;"><span class="tag-freq">${freqLabel}</span></td>
+            <td class="mono" style="padding: 8px 6px; text-align: right; font-weight: 700; color: ${isInc ? '#10b981' : '#f1f5f9'}; white-space: nowrap;">
+              ${isInc ? '+' : '-'} ${formatMoney(t.amount)}
+            </td>
+            <td style="padding: 8px 6px; text-align: center;">
+              <button onclick="deleteTx('${t.id}')" style="background:#1e293b; border:1px solid #334155; color: #94a3b8; border-radius:6px; padding:3px 7px; font-size:11px; cursor:pointer;">✕</button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      const budgetList = document.getElementById('budget-progress-list');
+      budgetList.innerHTML = '';
+      Object.keys(limits).forEach(cat => {
+        const spent = catExpenses[cat] || 0;
+        const lim = limits[cat] || 1;
+        const pct = Math.min(100, Math.round((spent / lim) * 100));
+        let color = '#10b981';
+        if (pct >= 85 && pct < 100) color = '#f59e0b';
+        else if (pct >= 100) color = '#ef4444';
+
+        const div = document.createElement('div');
+        div.style.background = '#0b1120';
+        div.style.border = '1px solid #1e293b';
+        div.style.padding = '10px 14px';
+        div.style.borderRadius = '12px';
+        div.innerHTML = `
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+            <strong style="color: #fff;">${cat}</strong>
+            <span class="mono" style="color: ${color};">${pct}%</span>
+          </div>
+          <div style="width: 100%; height: 6px; background: #1e293b; border-radius: 6px; overflow: hidden; margin-bottom: 4px;">
+            <div style="width: ${pct}%; height: 100%; background: ${color}; transition: width 0.3s;"></div>
+          </div>
+          <div class="mono" style="display: flex; justify-content: space-between; font-size: 10px; color: #64748b;">
+            <span>Gasto Real: ${formatMoney(spent)}</span>
+            <span>Tope Mes: ${formatMoney(lim)}</span>
+          </div>
+        `;
+        budgetList.appendChild(div);
+      });
+    }
+
+    function renderCurrencyModal() {
+      const container = document.getElementById('currency-options-list');
+      container.innerHTML = '';
+      Object.keys(CURRENCIES).forEach(code => {
+        const c = CURRENCIES[code];
+        const isCurrent = code === currentCurrencyCode;
+        const btn = document.createElement('button');
+        btn.style.cssText = `padding: 10px 12px; border-radius: 10px; border: 1px solid ${isCurrent ? '#10b981' : '#334155'}; background: ${isCurrent ? 'rgba(16,185,129,0.15)' : '#070a10'}; color: ${isCurrent ? '#6ee7b7' : '#cbd5e1'}; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left;`;
+        btn.innerHTML = `<span>${c.label}</span> <span class="mono" style="color:#94a3b8;">${c.symbol}</span>`;
+        btn.onclick = () => {
+          currentCurrencyCode = code;
+          saveState();
+          render();
+          document.getElementById('modal-currency').classList.add('hidden');
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    window.deleteTx = function(id) {
+      transactions = transactions.filter(t => t.id !== id);
+      saveState();
+      render();
+    };
+
+    // Inicialización inmediata segura
+    function initApp() {
+      const txDateInput = document.getElementById('tx-date');
+      if (txDateInput) txDateInput.value = new Date().toISOString().split('T')[0];
+      
+      updateCategoryDropdown('ingreso');
+      const catSelect = document.getElementById('tx-category');
+      if (catSelect) catSelect.onchange = checkNoticeVisibility;
+
+      document.getElementById('btn-currency-selector').onclick = () => {
+        renderCurrencyModal();
+        document.getElementById('modal-currency').classList.remove('hidden');
+      };
+      document.getElementById('btn-close-currency').onclick = () => document.getElementById('modal-currency').classList.add('hidden');
+
+      document.getElementById('btn-open-modal').onclick = () => document.getElementById('modal-transaction').classList.remove('hidden');
+      document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-transaction').classList.add('hidden');
+
+      document.getElementById('btn-open-limits').onclick = () => {
+        document.getElementById('limit-services').value = limits['Servicios Públicos (Luz / Agua / Gas / Tel)'] || '';
+        document.getElementById('limit-housing').value = limits['Vivienda / Arriendo'] || '';
+        document.getElementById('limit-food').value = limits['Alimentación y Mercado'] || '';
+        document.getElementById('limit-transport').value = limits['Transporte / Gasolina'] || '';
+        document.getElementById('limit-fun').value = limits['Entretenimiento / Gustos'] || '';
+        document.getElementById('modal-limits').classList.remove('hidden');
+      };
+      document.getElementById('btn-close-limits').onclick = () => document.getElementById('modal-limits').classList.add('hidden');
+
+      document.getElementById('btn-open-install').onclick = () => document.getElementById('modal-install').classList.remove('hidden');
+      document.getElementById('btn-close-install').onclick = () => document.getElementById('modal-install').classList.add('hidden');
+
+      const menuTrigger = document.getElementById('btn-menu-trigger');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      menuTrigger.onclick = (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+      };
+      document.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
+
+      document.getElementById('btn-logout').onclick = () => {
+        localStorage.removeItem(STORAGE_KEY_AUTH);
+        dropdownMenu.classList.add('hidden');
+        checkAuth();
+      };
+
+      const flowBtns = document.querySelectorAll('.flow-btn');
+      const txFlowInput = document.getElementById('tx-flow');
+      flowBtns.forEach(btn => {
+        btn.onclick = () => {
+          flowBtns.forEach(b => {
+            b.style.background = '#070a10';
+            b.style.borderColor = '#1e293b';
+            b.style.color = '#94a3b8';
+          });
+          const flow = btn.dataset.flow;
+          txFlowInput.value = flow;
+          
+          if (flow === 'ingreso') {
+            btn.style.background = 'rgba(16,185,129,0.2)';
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#6ee7b7';
+          } else if (flow === 'fijo') {
+            btn.style.background = 'rgba(56,189,248,0.2)';
+            btn.style.borderColor = '#38bdf8';
+            btn.style.color = '#7dd3fc';
+          } else {
+            btn.style.background = 'rgba(251,146,60,0.2)';
+            btn.style.borderColor = '#fb923c';
+            btn.style.color = '#fdba74';
+          }
+          updateCategoryDropdown(flow);
+        };
+      });
+
+      const freqBtns = document.querySelectorAll('.freq-btn');
+      const txFreqInput = document.getElementById('tx-frequency');
+      freqBtns.forEach(btn => {
+        btn.onclick = () => {
+          freqBtns.forEach(b => {
+            b.style.background = '#070a10';
+            b.style.borderColor = '#1e293b';
+            b.style.color = '#94a3b8';
+          });
+          txFreqInput.value = btn.dataset.freq;
+          btn.style.background = 'rgba(16,185,129,0.2)';
+          btn.style.borderColor = '#10b981';
+          btn.style.color = '#6ee7b7';
+        };
+      });
+
+      document.getElementById('form-transaction').onsubmit = (e) => {
+        e.preventDefault();
+        transactions.unshift({
+          id: Date.now().toString(),
+          flow: txFlowInput.value,
+          frequency: txFreqInput.value,
+          concept: document.getElementById('tx-concept').value.trim(),
+          amount: parseFloat(document.getElementById('tx-amount').value),
+          category: document.getElementById('tx-category').value,
+          date: document.getElementById('tx-date').value
+        });
+        saveState();
+        render();
+        document.getElementById('form-transaction').reset();
+        document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+        updateCategoryDropdown(txFlowInput.value);
+        document.getElementById('modal-transaction').classList.add('hidden');
+      };
+
+      document.getElementById('form-limits').onsubmit = (e) => {
+        e.preventDefault();
+        limits['Servicios Públicos (Luz / Agua / Gas / Tel)'] = parseFloat(document.getElementById('limit-services').value) || 0;
+        limits['Vivienda / Arriendo'] = parseFloat(document.getElementById('limit-housing').value) || 0;
+        limits['Alimentación y Mercado'] = parseFloat(document.getElementById('limit-food').value) || 0;
+        limits['Transporte / Gasolina'] = parseFloat(document.getElementById('limit-transport').value) || 0;
+        limits['Entretenimiento / Gustos'] = parseFloat(document.getElementById('limit-fun').value) || 0;
+        saveState();
+        render();
+        document.getElementById('modal-limits').classList.add('hidden');
+      };
+
+      document.getElementById('filter-type').onchange = render;
+
+      document.getElementById('btn-export-backup').onclick = () => {
+        const data = { transactions, limits, currency: currentCurrencyCode, exportedAt: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `DL_Finanzas_Respaldo.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      document.getElementById('input-import-backup').onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (data.transactions) {
+              transactions = data.transactions;
+              if (data.limits) limits = data.limits;
+              if (data.currency) currentCurrencyCode = data.currency;
+              saveState();
+              render();
+              alert("Datos restaurados correctamente.");
+            }
+          } catch(err) {
+            alert("Archivo no válido.");
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      checkAuth();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
