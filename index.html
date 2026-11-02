@@ -12,7 +12,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -33,11 +33,22 @@
       background: rgba(7, 10, 16, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid #1e293b;
-      padding: 12px 16px;
+      padding: 10px 16px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .main-wrap { max-width: 1100px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
     
+    /* Logo Container */
+    .logo-container {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(145deg, #2a3447, #0b0f19);
+      border: 1px solid #475569; padding: 2px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      overflow: hidden; flex-shrink: 0;
+    }
+    .logo-svg { width: 100%; height: 100%; }
+
     /* Tarjetas */
     .card {
       background: rgba(15, 23, 42, 0.85);
@@ -65,6 +76,16 @@
       color: #94a3b8; cursor: pointer;
     }
 
+    /* Currency Badge Button */
+    .currency-badge {
+      font-size: 10px; font-weight: 700;
+      background: rgba(16,185,129,0.15); color: #10b981;
+      border: 1px solid rgba(16,185,129,0.35); padding: 2px 7px;
+      border-radius: 6px; cursor: pointer; display: inline-flex;
+      align-items: center; gap: 4px; transition: all 0.2s;
+    }
+    .currency-badge:hover { background: rgba(16,185,129,0.25); border-color: #10b981; }
+
     /* Grid KPIs */
     .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
     @media(min-width: 768px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -89,9 +110,9 @@
     }
     .input-field:focus { border-color: #10b981; }
 
-    /* Menú desplegable */
+    /* Dropdown Menus */
     .dropdown {
-      position: absolute; right: 16px; top: 60px; z-index: 50; background: #0f172a;
+      position: absolute; right: 0; top: 48px; z-index: 50; background: #0f172a;
       border: 1px solid #334155; border-radius: 16px; width: 230px; box-shadow: 0 10px 25px rgba(0,0,0,0.6);
       display: flex; flex-direction: column; overflow: hidden;
     }
@@ -109,13 +130,49 @@
   <!-- Navbar -->
   <header class="header-bar">
     <div style="display: flex; align-items: center; gap: 10px;">
-      <div style="width: 36px; height: 36px; background: #1e293b; border: 1px solid #475569; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: #e2e8f0;">
-        DL
+      
+      <!-- Logo Oficial DL Company Tecnology -->
+      <div class="logo-container" title="DL Company Tecnology">
+        <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="metalBg" cx="40%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="35%" stop-color="#cbd5e1"/>
+              <stop offset="70%" stop-color="#64748b"/>
+              <stop offset="100%" stop-color="#1e293b"/>
+            </radialGradient>
+            <linearGradient id="metalBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="50%" stop-color="#94a3b8"/>
+              <stop offset="100%" stop-color="#334155"/>
+            </linearGradient>
+            <filter id="shadowDepth" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.8"/>
+            </filter>
+          </defs>
+          <!-- Aro Circular Metálico Exterior -->
+          <circle cx="50" cy="50" r="41" stroke="url(#metalBevel)" stroke-width="7" filter="url(#shadowDepth)"/>
+          <circle cx="50" cy="50" r="35" stroke="#0b0f19" stroke-width="2"/>
+          
+          <!-- Monograma Geométrico 'DL' -->
+          <!-- Trazo 'D' Curvado Biselado -->
+          <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" 
+                fill="url(#metalBg)" filter="url(#shadowDepth)"/>
+          <!-- Trazo 'L' Angular Afilado y Cruzado -->
+          <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" 
+                fill="url(#metalBevel)" filter="url(#shadowDepth)"/>
+        </svg>
       </div>
+
       <div>
-        <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 6px; position: relative;">
           <strong style="font-size: 14px; letter-spacing: -0.3px; color: #fff;">DL FINANZAS</strong>
-          <span class="mono" style="font-size: 9px; font-weight: 700; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); padding: 1px 4px; border-radius: 4px;">COP</span>
+          
+          <!-- Botón de Selección de Divisa Dinámica -->
+          <button id="btn-currency-selector" class="currency-badge mono" title="Cambiar moneda">
+            <span id="label-active-currency">COP</span>
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
         </div>
         <p style="font-size: 9px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">DL COMPANY TECNOLOGY</p>
       </div>
@@ -172,7 +229,7 @@
           </div>
           <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
             <p style="font-size: 10px; color: #94a3b8;">BALANCE DISPONIBLE</p>
-            <p id="kpi-balance" class="mono" style="font-size: 16px; font-weight: 800; color: #fff;">$ 0 COP</p>
+            <p id="kpi-balance" class="mono" style="font-size: 16px; font-weight: 800; color: #fff;">$ 0</p>
           </div>
         </div>
       </div>
@@ -180,19 +237,19 @@
       <div class="kpi-grid">
         <div class="kpi-box">
           <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">INGRESOS</p>
-          <p id="kpi-incomes" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0 COP</p>
+          <p id="kpi-incomes" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
         </div>
         <div class="kpi-box">
           <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">GASTOS FIJOS</p>
-          <p id="kpi-fixed-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0 COP</p>
+          <p id="kpi-fixed-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
         </div>
         <div class="kpi-box">
           <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">VARIABLES</p>
-          <p id="kpi-var-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0 COP</p>
+          <p id="kpi-var-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
         </div>
         <div class="kpi-box">
           <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">TOTAL GASTOS</p>
-          <p id="kpi-total-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fb7185; margin-top: 4px;">$ 0 COP</p>
+          <p id="kpi-total-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fb7185; margin-top: 4px;">$ 0</p>
         </div>
       </div>
     </section>
@@ -235,6 +292,21 @@
 
   </main>
 
+  <!-- Modal: Selector de Moneda -->
+  <div id="modal-currency" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width: 380px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Seleccionar Moneda Local</h3>
+        <button id="btn-close-currency" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">Elige la divisa en la que deseas visualizar todos los importes:</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="currency-options-list">
+        <!-- Renderizado dinámico de divisas -->
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Registrar Movimiento -->
   <div id="modal-transaction" class="modal-overlay hidden">
     <div class="modal-content">
@@ -254,8 +326,8 @@
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Concepto</label>
         <input type="text" id="tx-concept" required placeholder="Ej: Sueldo mensual, Alquiler..." class="input-field">
 
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto en Pesos Colombianos ($ COP)</label>
-        <input type="number" id="tx-amount" required placeholder="Ej: 1930000" min="1" class="input-field mono">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto (<span id="modal-amount-currency">COP</span>)</label>
+        <input type="number" id="tx-amount" required placeholder="Ej: 1930000" min="0.01" step="any" class="input-field mono">
 
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Categoría</label>
         <select id="tx-category" class="input-field">
@@ -282,18 +354,18 @@
   <div id="modal-limits" class="modal-overlay hidden">
     <div class="modal-content">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Calibrar Topes Mensuales (COP)</h3>
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Calibrar Topes Mensuales (<span id="modal-limits-currency">COP</span>)</h3>
         <button id="btn-close-limits" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
       </div>
       <form id="form-limits">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Vivienda y Servicios</label>
-        <input type="number" id="limit-housing" class="input-field mono">
+        <input type="number" id="limit-housing" class="input-field mono" step="any">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Alimentación y Mercado</label>
-        <input type="number" id="limit-food" class="input-field mono">
+        <input type="number" id="limit-food" class="input-field mono" step="any">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Transporte</label>
-        <input type="number" id="limit-transport" class="input-field mono">
+        <input type="number" id="limit-transport" class="input-field mono" step="any">
         <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Entretenimiento / Gustos</label>
-        <input type="number" id="limit-fun" class="input-field mono">
+        <input type="number" id="limit-fun" class="input-field mono" step="any">
         <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
           Guardar Nuevos Topes
         </button>
@@ -314,10 +386,28 @@
   </div>
 
   <script>
-    const formatCOP = (val) => '$ ' + Math.round(Number(val) || 0).toLocaleString('es-CO') + ' COP';
+    // Catálogo de monedas disponibles
+    const CURRENCIES = {
+      'COP': { label: 'Peso Colombiano (COP)', locale: 'es-CO', symbol: '$' },
+      'USD': { label: 'Dólar Estadounidense (USD)', locale: 'en-US', symbol: '$' },
+      'EUR': { label: 'Euro (EUR)', locale: 'es-ES', symbol: '€' },
+      'MXN': { label: 'Peso Mexicano (MXN)', locale: 'es-MX', symbol: '$' },
+      'PEN': { label: 'Sol Peruano (PEN)', locale: 'es-PE', symbol: 'S/' },
+      'CLP': { label: 'Peso Chileno (CLP)', locale: 'es-CL', symbol: '$' },
+      'ARS': { label: 'Peso Argentino (ARS)', locale: 'es-AR', symbol: '$' }
+    };
 
     const STORAGE_KEY_TX = 'dl_finanzas_tx';
     const STORAGE_KEY_LIMITS = 'dl_finanzas_limits';
+    const STORAGE_KEY_CURRENCY = 'dl_finanzas_currency';
+
+    let currentCurrencyCode = localStorage.getItem(STORAGE_KEY_CURRENCY) || 'COP';
+
+    const formatMoney = (val) => {
+      const curr = CURRENCIES[currentCurrencyCode] || CURRENCIES['COP'];
+      const num = Number(val) || 0;
+      return curr.symbol + ' ' + Math.round(num).toLocaleString(curr.locale) + ' ' + currentCurrencyCode;
+    };
 
     let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY_TX)) || [];
     let limits = JSON.parse(localStorage.getItem(STORAGE_KEY_LIMITS)) || {
@@ -336,14 +426,20 @@
     const tableBody = document.getElementById('transactions-table-body');
     const budgetList = document.getElementById('budget-progress-list');
     const filterType = document.getElementById('filter-type');
+    const activeCurrencyLabel = document.getElementById('label-active-currency');
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
       localStorage.setItem(STORAGE_KEY_LIMITS, JSON.stringify(limits));
+      localStorage.setItem(STORAGE_KEY_CURRENCY, currentCurrencyCode);
       render();
     }
 
     function render() {
+      activeCurrencyLabel.textContent = currentCurrencyCode;
+      document.getElementById('modal-amount-currency').textContent = currentCurrencyCode;
+      document.getElementById('modal-limits-currency').textContent = currentCurrencyCode;
+
       let totalIncome = 0;
       let totalFixed = 0;
       let totalVar = 0;
@@ -365,12 +461,12 @@
       const balance = totalIncome - totalExp;
       const rate = totalIncome > 0 ? Math.max(0, ((balance / totalIncome) * 100)).toFixed(1) : '0.0';
 
-      kpiBalance.textContent = formatCOP(balance);
+      kpiBalance.textContent = formatMoney(balance);
       kpiSavingsRate.textContent = rate + '%';
-      kpiIncomes.textContent = formatCOP(totalIncome);
-      kpiFixed.textContent = formatCOP(totalFixed);
-      kpiVar.textContent = formatCOP(totalVar);
-      kpiTotalExp.textContent = formatCOP(totalExp);
+      kpiIncomes.textContent = formatMoney(totalIncome);
+      kpiFixed.textContent = formatMoney(totalFixed);
+      kpiVar.textContent = formatMoney(totalVar);
+      kpiTotalExp.textContent = formatMoney(totalExp);
 
       const f = filterType.value;
       const filtered = transactions.filter(t => f === 'all' || t.flow === f);
@@ -387,7 +483,7 @@
             <td style="padding: 8px 4px; font-weight: 700; color: #fff;">${t.concept}</td>
             <td style="padding: 8px 4px; color: #cbd5e1;">${t.category}</td>
             <td class="mono" style="padding: 8px 4px; text-align: right; font-weight: 700; color: ${isInc ? '#10b981' : '#f1f5f9'};">
-              ${isInc ? '+' : '-'} ${formatCOP(t.amount)}
+              ${isInc ? '+' : '-'} ${formatMoney(t.amount)}
             </td>
             <td style="padding: 8px 4px; text-align: center;">
               <button onclick="deleteTx('${t.id}')" style="background:none; border:none; color: #64748b; cursor:pointer;">✕</button>
@@ -420,11 +516,29 @@
             <div style="width: ${pct}%; height: 100%; background: ${color}; transition: width 0.3s;"></div>
           </div>
           <div class="mono" style="display: flex; justify-content: space-between; font-size: 10px; color: #64748b;">
-            <span>${formatCOP(spent)}</span>
-            <span>Tope: ${formatCOP(lim)}</span>
+            <span>${formatMoney(spent)}</span>
+            <span>Tope: ${formatMoney(lim)}</span>
           </div>
         `;
         budgetList.appendChild(div);
+      });
+    }
+
+    function renderCurrencyModal() {
+      const container = document.getElementById('currency-options-list');
+      container.innerHTML = '';
+      Object.keys(CURRENCIES).forEach(code => {
+        const c = CURRENCIES[code];
+        const isCurrent = code === currentCurrencyCode;
+        const btn = document.createElement('button');
+        btn.style.cssText = `padding: 10px 12px; border-radius: 10px; border: 1px solid ${isCurrent ? '#10b981' : '#334155'}; background: ${isCurrent ? 'rgba(16,185,129,0.15)' : '#070a10'}; color: ${isCurrent ? '#6ee7b7' : '#cbd5e1'}; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left;`;
+        btn.innerHTML = `<span>${c.label}</span> <span class="mono" style="color:#94a3b8;">${c.symbol}</span>`;
+        btn.onclick = () => {
+          currentCurrencyCode = code;
+          saveState();
+          document.getElementById('modal-currency').classList.add('hidden');
+        };
+        container.appendChild(btn);
       });
     }
 
@@ -436,10 +550,20 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
 
+      // Modal Moneda
+      const modalCurr = document.getElementById('modal-currency');
+      document.getElementById('btn-currency-selector').onclick = () => {
+        renderCurrencyModal();
+        modalCurr.classList.remove('hidden');
+      };
+      document.getElementById('btn-close-currency').onclick = () => modalCurr.classList.add('hidden');
+
+      // Modal Transacción
       const modalTx = document.getElementById('modal-transaction');
       document.getElementById('btn-open-modal').onclick = () => modalTx.classList.remove('hidden');
       document.getElementById('btn-close-modal').onclick = () => modalTx.classList.add('hidden');
 
+      // Modal Topes
       const modalLimits = document.getElementById('modal-limits');
       document.getElementById('btn-open-limits').onclick = () => {
         document.getElementById('limit-housing').value = limits['Vivienda y Servicios'] || '';
@@ -450,10 +574,12 @@
       };
       document.getElementById('btn-close-limits').onclick = () => modalLimits.classList.add('hidden');
 
+      // Modal Instalar
       const modalInstall = document.getElementById('modal-install');
       document.getElementById('btn-open-install').onclick = () => modalInstall.classList.remove('hidden');
       document.getElementById('btn-close-install').onclick = () => modalInstall.classList.add('hidden');
 
+      // Menú Opciones
       const menuTrigger = document.getElementById('btn-menu-trigger');
       const dropdownMenu = document.getElementById('dropdown-menu');
       menuTrigger.onclick = (e) => {
@@ -462,6 +588,7 @@
       };
       document.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
 
+      // Flujo de Botones
       const flowBtns = document.querySelectorAll('.flow-btn');
       const txFlowInput = document.getElementById('tx-flow');
       flowBtns.forEach(btn => {
@@ -478,6 +605,7 @@
         };
       });
 
+      // Guardar Transacción
       document.getElementById('form-transaction').onsubmit = (e) => {
         e.preventDefault();
         transactions.unshift({
@@ -494,6 +622,7 @@
         modalTx.classList.add('hidden');
       };
 
+      // Guardar Topes
       document.getElementById('form-limits').onsubmit = (e) => {
         e.preventDefault();
         limits['Vivienda y Servicios'] = parseFloat(document.getElementById('limit-housing').value) || 0;
@@ -506,8 +635,9 @@
 
       filterType.onchange = render;
 
+      // Descargar Respaldo JSON
       document.getElementById('btn-export-backup').onclick = () => {
-        const data = { transactions, limits, exportedAt: new Date().toISOString() };
+        const data = { transactions, limits, currency: currentCurrencyCode, exportedAt: new Date().toISOString() };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -517,6 +647,7 @@
         URL.revokeObjectURL(url);
       };
 
+      // Restaurar Datos
       document.getElementById('input-import-backup').onchange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -527,8 +658,9 @@
             if (data.transactions) {
               transactions = data.transactions;
               if (data.limits) limits = data.limits;
+              if (data.currency) currentCurrencyCode = data.currency;
               saveState();
-              alert("Datos restaurados correctamente.");
+              alert("Datos y divisa restaurados correctamente.");
             }
           } catch(err) {
             alert("Archivo no válido.");
@@ -537,6 +669,7 @@
         reader.readAsText(file);
       };
 
+      // Limpiar Todo
       document.getElementById('btn-reset-data').onclick = () => {
         if (confirm("¿Seguro que deseas empezar de cero y vaciar los datos?")) {
           transactions = [];
