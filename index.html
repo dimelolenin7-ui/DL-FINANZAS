@@ -13,7 +13,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,6 +22,7 @@
       color: #f1f5f9;
       padding-bottom: 80px;
       -webkit-tap-highlight-color: transparent;
+      min-height: 100vh;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
     svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
@@ -38,7 +38,7 @@
     }
     .main-wrap { max-width: 1100px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
     
-    /* Logo Container */
+    /* Logo Container Metal */
     .logo-container {
       width: 42px; height: 42px; border-radius: 12px;
       background: linear-gradient(145deg, #2a3447, #0b0f19);
@@ -64,8 +64,9 @@
       color: #022c22; font-weight: 800; font-size: 13px;
       border: none; border-radius: 12px; padding: 10px 14px;
       display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
-      white-space: nowrap;
+      white-space: nowrap; transition: opacity 0.2s;
     }
+    .btn-green:hover { opacity: 0.92; }
     .btn-gray {
       background: #1e293b; color: #94a3b8; font-size: 12px; font-weight: 600;
       border: 1px solid #334155; border-radius: 10px; padding: 8px 12px;
@@ -76,6 +77,13 @@
       border-radius: 12px; display: flex; align-items: center; justify-content: center;
       color: #94a3b8; cursor: pointer;
     }
+    .btn-google {
+      width: 100%; background: #ffffff; color: #1e293b; font-weight: 700;
+      font-size: 13px; border: 1px solid #cbd5e1; border-radius: 12px;
+      padding: 11px 14px; display: flex; align-items: center; justify-content: center;
+      gap: 10px; cursor: pointer; margin-top: 10px; transition: background 0.2s;
+    }
+    .btn-google:hover { background: #f8fafc; }
 
     /* Currency Badge */
     .currency-badge {
@@ -91,9 +99,9 @@
     @media(min-width: 768px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
     .kpi-box { background: #0b1120; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; }
     
-    /* Modales */
+    /* Modales y Formularios */
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.8);
+      position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.85);
       backdrop-filter: blur(6px); display: flex; align-items: flex-end; justify-content: center;
     }
     @media(min-width: 640px) { .modal-overlay { align-items: center; padding: 16px; } }
@@ -113,7 +121,7 @@
     /* Dropdown Menus */
     .dropdown {
       position: absolute; right: 0; top: 48px; z-index: 50; background: #0f172a;
-      border: 1px solid #334155; border-radius: 16px; width: 230px; box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      border: 1px solid #334155; border-radius: 16px; width: 250px; box-shadow: 0 10px 25px rgba(0,0,0,0.6);
       display: flex; flex-direction: column; overflow: hidden;
     }
     .dropdown button, .dropdown label {
@@ -129,7 +137,6 @@
     .tag-type {
       font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
     }
-
     .notice-box {
       background: rgba(56, 189, 248, 0.08);
       border: 1px dashed rgba(56, 189, 248, 0.4);
@@ -141,237 +148,247 @@
       line-height: 1.4;
     }
 
+    /* Auth Screen */
+    #auth-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 20px; background: radial-gradient(circle at top, #111827 0%, #070a10 70%);
+    }
+    .auth-card {
+      width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #334155; border-radius: 28px; padding: 32px 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+    .auth-tab {
+      flex: 1; padding: 8px; font-size: 12px; font-weight: 700; text-align: center;
+      background: transparent; border: none; color: #94a3b8; cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .auth-tab.active {
+      color: #10b981; border-color: #10b981;
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="header-bar">
-    <div style="display: flex; align-items: center; gap: 10px;">
+  <!-- ================= PANTALLA PRINCIPAL DE INGRESO Y REGISTRO (AUTH GATE) ================= -->
+  <section id="auth-screen">
+    <div class="auth-card">
       
-      <!-- Logo DL -->
-      <div class="logo-container" title="DL Company Tecnology">
-        <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="metalBg" cx="40%" cy="30%" r="70%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="35%" stop-color="#cbd5e1"/>
-              <stop offset="70%" stop-color="#64748b"/>
-              <stop offset="100%" stop-color="#1e293b"/>
-            </radialGradient>
-            <linearGradient id="metalBevel" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="50%" stop-color="#94a3b8"/>
-              <stop offset="100%" stop-color="#334155"/>
-            </linearGradient>
-            <filter id="shadowDepth" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.8"/>
-            </filter>
-          </defs>
-          <circle cx="50" cy="50" r="41" stroke="url(#metalBevel)" stroke-width="7" filter="url(#shadowDepth)"/>
-          <circle cx="50" cy="50" r="35" stroke="#0b0f19" stroke-width="2"/>
-          <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" fill="url(#metalBg)" filter="url(#shadowDepth)"/>
-          <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" fill="url(#metalBevel)" filter="url(#shadowDepth)"/>
-        </svg>
+      <!-- Branding Logo DL -->
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px;">
+        <div class="logo-container" style="width: 58px; height: 58px; margin-bottom: 12px; border-radius: 16px;">
+          <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="metalBgAuth" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="35%" stop-color="#cbd5e1"/>
+                <stop offset="70%" stop-color="#64748b"/>
+                <stop offset="100%" stop-color="#1e293b"/>
+              </radialGradient>
+              <linearGradient id="metalBevelAuth" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="50%" stop-color="#94a3b8"/>
+                <stop offset="100%" stop-color="#334155"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="41" stroke="url(#metalBevelAuth)" stroke-width="7"/>
+            <circle cx="50" cy="50" r="35" stroke="#0b0f19" stroke-width="2"/>
+            <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" fill="url(#metalBgAuth)"/>
+            <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" fill="url(#metalBevelAuth)"/>
+          </svg>
+        </div>
+        <h1 style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">DL FINANZAS</h1>
+        <p style="font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">DL COMPANY TECNOLOGY</p>
       </div>
 
-      <div>
-        <div style="display: flex; align-items: center; gap: 6px; position: relative;">
-          <strong style="font-size: 14px; letter-spacing: -0.3px; color: #fff;">DL FINANZAS</strong>
-          
-          <button id="btn-currency-selector" class="currency-badge mono" title="Cambiar moneda">
-            <span id="label-active-currency">COP</span>
-            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-        </div>
-        <p style="font-size: 9px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">DL COMPANY TECNOLOGY</p>
-      </div>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <button id="btn-open-install" class="btn-gray">
-        <svg width="16" height="16" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-        Instalar
-      </button>
-
-      <button id="btn-open-modal" class="btn-green">
-        <svg width="16" height="16" fill="none" stroke="#022c22" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-        <span>+ Movimiento</span>
-      </button>
-
-      <div style="position: relative;">
-        <button id="btn-menu-trigger" class="btn-icon">
-          <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
-        </button>
-
-        <div id="dropdown-menu" class="dropdown hidden">
-          <button id="btn-export-backup">
-            <svg width="16" height="16" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Descargar Respaldo
-          </button>
-          <label>
-            <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            Restaurar Datos
-            <input type="file" id="input-import-backup" accept=".json" class="hidden">
-          </label>
-          <div style="height: 1px; background: #334155; margin: 4px 0;"></div>
-          <button id="btn-reset-data" style="color: #fb7185;">
-            <svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            Empezar de Cero
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Contenido Principal -->
-  <main class="main-wrap">
-
-    <!-- KPI Card -->
-    <section class="card">
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <span class="mono" style="font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase;">● Presupuesto Hogar</span>
-        <h2 style="font-size: 22px; font-weight: 800; color: #fff;">Resumen Financiero Mensual</h2>
-        <div style="display: flex; gap: 10px; margin-top: 6px;">
-          <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
-            <p style="font-size: 10px; color: #94a3b8;">TASA AHORRO</p>
-            <p id="kpi-savings-rate" class="mono" style="font-size: 16px; font-weight: 800; color: #10b981;">0.0%</p>
-          </div>
-          <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
-            <p style="font-size: 10px; color: #94a3b8;">BALANCE DISPONIBLE</p>
-            <p id="kpi-balance" class="mono" style="font-size: 16px; font-weight: 800; color: #fff;">$ 0</p>
-          </div>
-        </div>
+      <!-- Pestañas Acceso / Registro -->
+      <div style="display: flex; border-bottom: 1px solid #1e293b; margin-bottom: 20px;">
+        <button id="tab-login" class="auth-tab active" type="button">Iniciar Sesión</button>
+        <button id="tab-register" class="auth-tab" type="button">Crear Cuenta</button>
       </div>
 
-      <!-- Métricas separadas con precisión contable -->
-      <div class="kpi-grid">
-        <div class="kpi-box">
-          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">INGRESOS AL MES</p>
-          <p id="kpi-incomes" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
-        </div>
-        <div class="kpi-box">
-          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">GASTOS FIJOS (HOGAR Y SERVICIOS)</p>
-          <p id="kpi-fixed-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
-        </div>
-        <div class="kpi-box">
-          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">GASTOS VARIABLES / OCIO</p>
-          <p id="kpi-var-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
-        </div>
-        <div class="kpi-box">
-          <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">TOTAL EGRESOS</p>
-          <p id="kpi-total-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fb7185; margin-top: 4px;">$ 0</p>
-        </div>
-      </div>
-    </section>
+      <!-- Formulario Login -->
+      <form id="form-login">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Correo Electrónico</label>
+        <input type="email" id="login-email" required placeholder="tu-correo@ejemplo.com" class="input-field">
 
-    <!-- Semáforo y Topes -->
-    <section class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <div>
-          <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Semáforo de Presupuesto</h3>
-          <p style="font-size: 11px; color: #94a3b8;">Control de gastos frente a topes máximos por categoría</p>
-        </div>
-        <button id="btn-open-limits" class="btn-gray">Calibrar Topes</button>
-      </div>
-      <div id="budget-progress-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
-    </section>
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Contraseña</label>
+        <input type="password" id="login-password" required placeholder="••••••••" class="input-field">
 
-    <!-- Historial de Transacciones -->
-    <section class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 14px; font-weight: 800; color: #fff;">Movimientos Registrados</h3>
-        <select id="filter-type" style="background: #0b1120; color: #cbd5e1; border: 1px solid #334155; padding: 4px 8px; border-radius: 8px; font-size: 11px;">
-          <option value="all">Todos los movimientos</option>
-          <option value="ingreso">Solo Ingresos (+)</option>
-          <option value="fijo">Gastos Fijos y Servicios (-)</option>
-          <option value="variable">Gastos Variables / Compras (-)</option>
-        </select>
-      </div>
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
-          <thead>
-            <tr style="border-bottom: 1px solid #1e293b; color: #64748b;">
-              <th style="padding: 8px 4px;">FECHA</th>
-              <th style="padding: 8px 4px;">TIPO</th>
-              <th style="padding: 8px 4px;">CONCEPTO</th>
-              <th style="padding: 8px 4px;">CATEGORÍA</th>
-              <th style="padding: 8px 4px;">MODALIDAD</th>
-              <th style="padding: 8px 4px; text-align: right;">VALOR</th>
-              <th style="padding: 8px 4px; text-align: center;"></th>
-            </tr>
-          </thead>
-          <tbody id="transactions-table-body"></tbody>
-        </table>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Modal: Selector de Moneda -->
-  <div id="modal-currency" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 380px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Seleccionar Moneda Local</h3>
-        <button id="btn-close-currency" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
-      </div>
-      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">Elige la divisa en la que deseas visualizar todos los importes:</p>
-      <div style="display: flex; flex-direction: column; gap: 8px;" id="currency-options-list"></div>
-    </div>
-  </div>
-
-  <!-- Modal: Añadir Movimiento -->
-  <div id="modal-transaction" class="modal-overlay hidden">
-    <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">Añadir Movimiento Contable</h3>
-        <button id="btn-close-modal" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
-      </div>
-      <form id="form-transaction">
-        
-        <!-- Clasificación Contable Clara -->
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Tipo de Flujo</label>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
-          <button type="button" data-flow="ingreso" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 11px; font-weight: 800; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer; text-align:center;">
-            + Ingreso
-          </button>
-          <button type="button" data-flow="fijo" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer; text-align:center;">
-            - Gasto Fijo / Servicios
-          </button>
-          <button type="button" data-flow="variable" class="flow-btn" style="padding: 10px 4px; border-radius: 10px; font-size: 10px; font-weight: 800; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer; text-align:center;">
-            - Variable / Compras
-          </button>
-        </div>
-        <input type="hidden" id="tx-flow" value="ingreso">
-
-        <!-- Frecuencia / Modalidad de Pago -->
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Modalidad de Pago o Consumo</label>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 12px;">
-          <button type="button" data-freq="mensual" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; cursor:pointer;">Mensual (30d)</button>
-          <button type="button" data-freq="quincenal" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Quincenal (15d)</button>
-          <button type="button" data-freq="factura" class="freq-btn" style="padding: 8px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #070a10; border: 1px solid #1e293b; color: #94a3b8; cursor:pointer;">Factura en Mano</button>
-        </div>
-        <input type="hidden" id="tx-frequency" value="mensual">
-
-        <div id="service-notice" class="notice-box hidden">
-          💡 <strong>Servicio Público Registrado:</strong> Se contabilizará como <em>Gasto Fijo</em> de tu hogar, pero registrando el valor exacto de la factura que te llegó este mes.
-        </div>
-
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Categoría del Movimiento</label>
-        <select id="tx-category" class="input-field"></select>
-
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Concepto / Detalle</label>
-        <input type="text" id="tx-concept" required placeholder="Ej: Recibo Luz EPM, Gas Natural, Sueldo, Arriendo..." class="input-field">
-
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Monto a Pagar (<span id="modal-amount-currency">COP</span>)</label>
-        <input type="number" id="tx-amount" required placeholder="Ej: 145000" min="0.01" step="any" class="input-field mono">
-
-        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Fecha de Pago</label>
-        <input type="date" id="tx-date" required class="input-field">
-
-        <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
-          Guardar Movimiento Contable
+        <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 13px; font-size: 14px; margin-top: 6px;">
+          Ingresar al Panel
         </button>
       </form>
-      
+
+      <!-- Formulario Registro -->
+      <form id="form-register" class="hidden">
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Nombre Completo</label>
+        <input type="text" id="reg-name" required placeholder="Ej: Lenin..." class="input-field">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Número de Identificación / Cédula</label>
+        <input type="text" id="reg-id" required placeholder="Ej: 1020304050" class="input-field mono">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Correo Electrónico</label>
+        <input type="email" id="reg-email" required placeholder="tu-correo@ejemplo.com" class="input-field">
+
+        <label style="font-size: 11px; color: #94a3b8; font-weight: 700;">Crear Contraseña</label>
+        <input type="password" id="reg-password" required placeholder="Mínimo 6 caracteres" minlength="6" class="input-field">
+
+        <button type="submit" class="btn-green" style="width: 100%; justify-content: center; padding: 13px; font-size: 14px; margin-top: 6px;">
+          Registrar y Crear Perfil
+        </button>
+      </form>
+
+      <!-- Botón Google -->
+      <div style="position: relative; margin: 20px 0 10px; text-align: center;">
+        <span style="background: #0f172a; padding: 0 10px; font-size: 10px; color: #64748b; font-weight: 700;">O ACCEDE RÁPIDO CON</span>
+      </div>
+
+      <button id="btn-login-google" type="button" class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        Ingresar directamente con Google
+      </button>
+
+      <p style="font-size: 10px; color: #64748b; text-align: center; margin-top: 16px; line-height: 1.4;">
+        Tus datos de acceso y finanzas quedan protegidos y guardados en este dispositivo.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ================= APLICACIÓN WEB / DASHBOARD FINANCIERO ================= -->
+  <div id="app-screen" class="hidden">
+    
+    <!-- Navbar -->
+    <header class="header-bar">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        
+        <!-- Logo DL -->
+        <div class="logo-container" title="DL Company Tecnology">
+          <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="metalBgDash" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="35%" stop-color="#cbd5e1"/>
+                <stop offset="70%" stop-color="#64748b"/>
+                <stop offset="100%" stop-color="#1e293b"/>
+              </radialGradient>
+              <linearGradient id="metalBevelDash" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="50%" stop-color="#94a3b8"/>
+                <stop offset="100%" stop-color="#334155"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="41" stroke="url(#metalBevelDash)" stroke-width="7"/>
+            <circle cx="50" cy="50" r="35" stroke="#0b0f19" stroke-width="2"/>
+            <path d="M 27 25 C 48 18 70 28 67 48 C 64 64 45 74 27 75 C 33 62 38 43 27 25 Z" fill="url(#metalBgDash)"/>
+            <path d="M 77 19 L 45 61 L 82 52 L 87 56 L 43 69 L 40 64 L 70 24 Z" fill="url(#metalBevelDash)"/>
+          </svg>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; position: relative;">
+            <strong style="font-size: 14px; letter-spacing: -0.3px; color: #fff;">DL FINANZAS</strong>
+            
+            <button id="btn-currency-selector" class="currency-badge mono" title="Cambiar moneda">
+              <span id="label-active-currency">COP</span>
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+          </div>
+          <p style="font-size: 9px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">DL COMPANY TECNOLOGY</p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button id="btn-open-install" class="btn-gray">
+          <svg width="16" height="16" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Instalar
+        </button>
+
+        <button id="btn-open-modal" class="btn-green">
+          <svg width="16" height="16" fill="none" stroke="#022c22" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          <span>+ Movimiento</span>
+        </button>
+
+        <!-- Dropdown Usuario y Opciones -->
+        <div style="position: relative;">
+          <button id="btn-menu-trigger" class="btn-icon">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+          </button>
+
+          <div id="dropdown-menu" class="dropdown hidden">
+            <!-- Info Usuario Activo -->
+            <div style="padding: 12px 16px; border-bottom: 1px solid #1e293b; background: #070a10;">
+              <p id="user-display-name" style="font-size: 12px; font-weight: 800; color: #fff;"></p>
+              <p id="user-display-id" style="font-size: 10px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;"></p>
+            </div>
+
+            <button id="btn-export-backup">
+              <svg width="16" height="16" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Descargar Respaldo (.json)
+            </button>
+            <label>
+              <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Restaurar Datos
+              <input type="file" id="input-import-backup" accept=".json" class="hidden">
+            </label>
+            <div style="height: 1px; background: #334155; margin: 4px 0;"></div>
+            <button id="btn-logout" style="color: #fb7185;">
+              <svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="main-wrap">
+
+      <!-- KPI Card -->
+      <section class="card">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span class="mono" style="font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase;">● Presupuesto Hogar</span>
+          <h2 style="font-size: 22px; font-weight: 800; color: #fff;">Resumen Financiero Mensual</h2>
+          <div style="display: flex; gap: 10px; margin-top: 6px;">
+            <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
+              <p style="font-size: 10px; color: #94a3b8;">TASA AHORRO</p>
+              <p id="kpi-savings-rate" class="mono" style="font-size: 16px; font-weight: 800; color: #10b981;">0.0%</p>
+            </div>
+            <div style="background: #0b1120; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 12px;">
+              <p style="font-size: 10px; color: #94a3b8;">BALANCE DISPONIBLE</p>
+              <p id="kpi-balance" class="mono" style="font-size: 16px; font-weight: 800; color: #fff;">$ 0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">INGRESOS AL MES</p>
+            <p id="kpi-incomes" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
+          </div>
+          <div class="kpi-box">
+            <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">GASTOS FIJOS Y SERVICIOS</p>
+            <p id="kpi-fixed-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
+          </div>
+          <div class="kpi-box">
+            <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">VARIABLES / OCIO</p>
+            <p id="kpi-var-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fff; margin-top: 4px;">$ 0</p>
+          </div>
+          <div class="kpi-box">
+            <p style="font-size: 10px; font-weight: 700; color: #94a3b8;">TOTAL EGRESOS</p>
+            <p id="kpi-total-expenses" class="mono" style="font-size: 15px; font-weight: 800; color: #fb7185; margin-top: 4px;">$ 0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Semáforo y Topes -->
+      <section class="card">
+        <div style="display: flex; justify-content: space-between; 
